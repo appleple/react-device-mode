@@ -43,6 +43,10 @@ const InputDevider = styled.div`
   margin-left: 5px;
 `
 
+const BtnStyle = styled.button`
+
+`
+
 export default class Header extends Component {
   render () {
     return (<HeaderStyle>
@@ -70,6 +74,11 @@ export default class Header extends Component {
                   <option value="-1">fitWindow</option>
                 </select>
               </InputGroup>
+              {context.state.resizable === false &&
+                <InputGroup>
+                  <BtnStyle onClick={context.actions.switchOrientation} className="acms-admin-btn">Portrait</BtnStyle>
+                </InputGroup>
+              }
             </HeaderInner>
           </Fragment>
         }

@@ -44,13 +44,23 @@ export default class ReactDeviceMode extends Component {
     return (<DeviceModeContext.Provider value={{
       state: this.state,
       actions: {
-        updateWidth: (width) => {
-          this.setState({width: parseInt(width)})
-        },
+        updateWidth: (width) => this.setState({width: parseInt(width)}),
         updateHeight: (height) => this.setState({height: parseInt(height)}),
         updateSize: (width, height) => this.setState({width: parseInt(width), height: parseInt(height)}),
         updateDevice: (deviceUA) => this.updateDevice(deviceUA),
-        updateScale: (scale) => this.setState({scale: parseInt(scale)})
+        updateScale: (scale) => this.setState({scale: parseInt(scale)}),
+        switchOrientation: () => {
+          const { orientation } = this.state;
+          if (orientation === 'portrait') {
+            this.setState({
+              orientation: 'landscape'
+            });
+          } else {
+            this.setState({
+              orientation: 'portrait'
+            });
+          }
+        }
       }
     }} >
       <ViwerStyle>

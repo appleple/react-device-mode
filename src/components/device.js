@@ -32,20 +32,33 @@ const DeviceWrapper = styled.div`
   }});
   transform-origin: top center;
   ${props => props.resizable ? '': `
-  padding-top: ${FrameTop}px;
-  padding-left: ${FrameLeft}px;
-  padding-right: ${FrameRight}px;
-  padding-bottom: ${FrameBottom}px;
+  ${props.orientation === 'portrait' || props.resizable === true ? `
+    padding-top: ${FrameTop}px;
+    padding-left: ${FrameLeft}px;
+    padding-right: ${FrameRight}px;
+    padding-bottom: ${FrameBottom}px;
+  ` : `
+    padding-top: ${FrameRight}px;
+    padding-left: ${FrameTop}px;
+    padding-right: ${FrameBottom}px;
+    padding-bottom: ${FrameLeft}px;
+  `
+  }
   border-radius: 35px;
   clear: both;
-  background: #fff;
+  background: #333;
   box-sizing: border-box;
   &:before {
     content: "";
     border: 2px solid #bcbcbc;
     position: absolute;
-    bottom: 10px;
-    left: calc(50% - 20px);
+    ${props.orientation === 'portrait' || props.resizable === true ? `
+      bottom: 10px;
+      left: calc(50% - 20px);
+    ` : `
+      right: 10px;
+      bottom: calc(50% - 20px);
+    `}
     width: 40px;
     height: 40px;
     border-radius: 20px;
@@ -55,10 +68,17 @@ const DeviceWrapper = styled.div`
     content: "";
     border: 3px solid #bcbcbc;
     position: absolute;
-    top: 25px;
-    left: calc(50% - 40px);
-    width: 80px;
-    height: 6px;
+    ${props.orientation === 'portrait' || props.resizable === true ? `
+      top: 25px;
+      left: calc(50% - 40px);
+      width: 80px;
+      height: 6px;
+    ` : `
+      left: 25px;
+      top: calc(50% - 40px);
+      width: 6px;
+      height  80px;
+    `}
     border-radius: 5px;
     box-sizing: border-box;
   }
@@ -95,17 +115,26 @@ export default class Device extends Component {
     return resizeConf;
   }
 
+  getSize(state) {
+    const width = state.width + FrameLeft + FrameRight + 6;
+    const height = state.height + FrameTop + FrameBottom + 6;
+    if (state.orientation === 'portrait' || state.resizable === true) {
+      return { width, height }
+    }
+    return { width: height, height: width }
+  }
+
   render () {
     
     return (<DeviceModeContext.Consumer>
       {context => (
         <DeviceContainer>
-          <Resizable enable={this.getRisizeConf(context.state.resizable)} size={{width: context.state.width + FrameLeft + FrameRight + 6, height: context.state.height + FrameTop + FrameBottom + 6}} onResizeStop={
+          <Resizable enable={this.getRisizeConf(context.state.resizable)} size={this.getSize(context.state)} onResizeStop={
             (e, direction, ref, d) => {
               context.actions.updateSize(context.state.width + d.width, context.state.height + d.height)
             } 
           }>
-            <DeviceWrapper resizable={context.state.resizable} scale={context.state.scale} height={context.state.height}>
+            <DeviceWrapper resizable={context.state.resizable} scale={context.state.scale} height={context.state.height} orientation={context.state.orientation} resizable={context.state.resizable}>
               <DeviceScreen key={context.state.ua} src={`${context.state.src}?ua=${context.state.ua}`} innerRef={(iframe) => {
                 this.iframe = iframe;
                 this.ua = context.ua;
