@@ -15,7 +15,8 @@ export default class ReactDeviceMode extends Component {
     super(props);
     this.state = Object.assign({}, DeviceMode, {
       devices: props.devices,
-      src: props.src
+      src: props.src,
+      i18n: Object.assign({}, DeviceMode.i18n, props.i18n)
     });
   }
 

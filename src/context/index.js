@@ -8,7 +8,10 @@ export const DeviceMode = {
   ua: '',
   src: '',
   resizable: false,
-  scale: 100
+  scale: 100,
+  i18n: {
+    fitWindow: 'fitWindow'
+  }
 };
 
 export const DeviceModeContext = React.createContext(DeviceMode);

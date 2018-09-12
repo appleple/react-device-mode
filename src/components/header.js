@@ -71,7 +71,7 @@ export default class Header extends Component {
                   <option value="100">100%</option>
                   <option value="125">125%</option>
                   <option value="150">150%</option>
-                  <option value="-1">fitWindow</option>
+                  <option value="-1">{context.state.i18n && context.state.i18n.fitWindow ? context.state.i18n.fitWindow : 'fitWindow'}</option>
                 </select>
               </InputGroup>
               {context.state.resizable === false &&
