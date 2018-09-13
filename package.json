@@ -1,7 +1,7 @@
 {
   "name": "react-device-mode",
   "version": "0.0.1",
-  "description": "custom field maker for a-blog cms",
+  "description": "device viewer for a-blog cms",
   "main": "lib/index.js",
   "scripts": {
     "test": "jest",
