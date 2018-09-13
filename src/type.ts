@@ -2,13 +2,17 @@ export interface I18n {
   fitWindow: string
 }
 
-export interface DeviceProps {
+export interface Device {
   devices: DeviceType[],
   src: string,
   i18n: I18n
 }
 
-export interface DeviceModeState extends DeviceProps {
+export interface DeviceProps extends Device {
+  onClose?(): void
+}
+
+export interface DeviceModeState extends Device {
   width: number,
   height: number,
   ua: string,
@@ -25,7 +29,8 @@ export interface DeviceModeContextType {
     updateSize(width: number, height: number) : void,
     updateDevice(deviceUA: string) : void,
     updateScale(scale: number) : number,
-    switchOrientation() : void
+	switchOrientation() : void,
+	onClose() : void
   }
 }
 

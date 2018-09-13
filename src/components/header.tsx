@@ -44,8 +44,14 @@ const InputDevider = styled.div`
   margin-left: 5px;
 `
 
-const BtnStyle = styled.button`
+const BtnStyle = styled.button``;
 
+const DismissBtn = styled.button`
+  position: absolute;
+  right: 40px;
+  top: 8px;
+  border: none;
+  color: #333;
 `
 
 export default class Header extends Component {
@@ -81,6 +87,7 @@ export default class Header extends Component {
                 </InputGroup>
               }
             </HeaderInner>
+			<DismissBtn onClick={context.actions.onClose}>x</DismissBtn>
           </Fragment>
         }
       </DeviceModeContext.Consumer>

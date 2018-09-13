@@ -26,4 +26,4 @@ render(<div>
     height: 640,
     resizable: false
   }
-]}/></div>, document.querySelector('#root'));
+]} onClose={() => console.log('closed')}/></div>, document.querySelector('#root'));

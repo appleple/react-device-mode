@@ -66,7 +66,12 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
               orientation: 'portrait'
             });
           }
-        }
+		},
+		onClose: () => {
+		  if (this.props.onClose) {
+		    this.props.onClose();
+		  }
+		}
       }
     }} >
       <ViwerStyle>
