@@ -59,9 +59,9 @@ export default class Header extends Component {
               {context.state.devices.map(device => <option value={device.ua}>{device.name}</option>)}
             </select>
               <InputGroup>
-              <InputStyle type="number" value={context.state.width} onInput={(e) => {context.actions.updateWidth(e.target.value)}} disabled={context.state.resizable !== true} />
+              <InputStyle type="number" value={context.state.width} onInput={(e: React.FormEvent<HTMLInputElement>) => {context.actions.updateWidth(parseInt(e.target.value))}} disabled={context.state.resizable !== true} />
               <InputDevider>×</InputDevider>
-              <InputStyle type="number" value={context.state.height} onInput={(e) => {context.actions.updateHeight(e.target.value)}} disabled={context.state.resizable !== true}/>
+              <InputStyle type="number" value={context.state.height} onInput={(e: React.FormEvent<HTMLInputElement>) => {context.actions.updateHeight(parseInt(e.target.value))}} disabled={context.state.resizable !== true}/>
               </InputGroup>
               <InputGroup>
                 <select value={context.state.scale} onChange={(e: { target: HTMLSelectElement }) => {

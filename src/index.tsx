@@ -46,11 +46,11 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
     return (<DeviceModeContext.Provider value={{
       state: this.state,
       actions: {
-        updateWidth: (width) => this.setState({width: parseInt(width)}),
-        updateHeight: (height) => this.setState({height: parseInt(height)}),
-        updateSize: (width, height) => this.setState({width: parseInt(width), height: parseInt(height)}),
+        updateWidth: (width) => this.setState({ width }),
+        updateHeight: (height) => this.setState({ height }),
+        updateSize: (width, height) => this.setState({width, height}),
         updateDevice: (deviceUA) => this.updateDevice(deviceUA),
-        updateScale: (scale) => this.setState({scale: parseInt(scale)}),
+        updateScale: (scale) => this.setState({ scale }),
         switchOrientation: () => {
           const { orientation } = this.state;
           if (orientation === 'portrait') {
