@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import Resizable from 're-resizable';
 import styled from 'styled-components';
+import { DeviceModeContext } from '../context';
 import { DeviceModeContextType } from '../type';
 
 const FrameLeft = 18;
@@ -26,7 +27,7 @@ const DeviceWrapper = styled.div`
   position: relative;
   transform: scale(${(props) => {
     if (props.scale === -1) {
-      return (window.innerHeight - 235) / props.height 
+      return (window.innerHeight - 235) / props.height
     } else {
       return props.scale / 100
     }
@@ -94,8 +95,6 @@ const DeviceScreen = styled.iframe`
   border-radius: 2px;
 `;
 
-import { DeviceModeContext } from '../context';
-
 export default class Device extends Component {
 
   iframe: HTMLElement;
@@ -128,14 +127,14 @@ export default class Device extends Component {
   }
 
   render () {
-    
+
     return (<DeviceModeContext.Consumer>
       {(context: DeviceModeContextType) => (
         <DeviceContainer>
           <Resizable enable={this.getRisizeConf(context.state.resizable)} size={this.getSize(context.state)} onResizeStop={
             (e, direction, ref, d) => {
               context.actions.updateSize(context.state.width + d.width, context.state.height + d.height)
-            } 
+            }
           }>
             <DeviceWrapper resizable={context.state.resizable} scale={context.state.scale} height={context.state.height} orientation={context.state.orientation}>
               <DeviceScreen key={context.state.ua} src={`${context.state.src}?ua=${context.state.ua}`} innerRef={(iframe: HTMLElement) => {

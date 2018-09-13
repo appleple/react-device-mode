@@ -8,14 +8,15 @@
     "babel": "babel src --out-dir lib --extensions \".ts,.tsx\"",
     "start": "webpack-dev-server ./test/index.tsx --mode development --open",
     "build-storybook": "build-storybook",
+    "build": "webpack ./test/index.tsx --development",
     "deploy": "np --no-cleanup"
   },
   "author": "steelydylan",
   "license": "MIT",
   "dependencies": {
     "re-resizable": "^4.4.10",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.3",
     "styled-components": "^3.3.2"
   },
   "devDependencies": {

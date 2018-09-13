@@ -4,7 +4,7 @@ import { DeviceModeContext, DeviceMode } from './context';
 import Header from './components/header';
 import Device from './components/device';
 import { setUserAgent } from './util';
-import { DeviceType, DeviceModeState, DeviceProps, I18n } from './type';
+import { DeviceModeState, DeviceProps } from './type';
 
 const ViwerStyle = styled.div`
   height  100vh;
@@ -29,6 +29,10 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
     }
   }
 
+  componentDidCatch(error, info) {
+	console.log(error, info);
+  }
+
   updateDevice(deviceUA: string) {
     const { devices } = this.state;
     const device = devices.find((item) => {
@@ -40,7 +44,7 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
     setUserAgent(window, deviceUA);
     this.setState(device);
   }
-  
+
   render () {
     const {width, height} = this.state;
     return (<DeviceModeContext.Provider value={{
