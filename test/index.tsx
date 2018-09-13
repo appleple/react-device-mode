@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import ReactDeviceMode from '../src/index.tsx';
 
 render(<div>
-  <link rel="stylesheet" href="http://acms.lab/themes/system/css/acms-admin.css" />
+  <link rel="stylesheet" href="https://developer.a-blogcms.jp/themes/system/css/acms-admin.css" />
   <ReactDeviceMode src='https://developer.a-blogcms.jp' i18n={ {fitWindow: '画面サイズにあわせる'} } devices={[
   {
     name: 'iPhone 6',
