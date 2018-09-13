@@ -64,8 +64,8 @@ export default class Header extends Component {
               <InputStyle type="number" value={context.state.height} onInput={(e) => {context.actions.updateHeight(e.target.value)}} disabled={context.state.resizable !== true}/>
               </InputGroup>
               <InputGroup>
-                <select value={context.state.scale} onChange={(e) => {
-                  context.actions.updateScale(e.target.value)
+                <select value={context.state.scale} onChange={(e: { target: HTMLSelectElement }) => {
+                  context.actions.updateScale(parseInt(e.target.value))
                 }}>
                   <option value="50">50%</option>
                   <option value="75">75%</option>
