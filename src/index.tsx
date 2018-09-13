@@ -12,7 +12,7 @@ const ViwerStyle = styled.div`
 
 export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeState> {
 
-  constructor(props: { devices: DeviceType[], src: string, i18n: I18n}) {
+  constructor(props: DeviceProps) {
     super(props);
     this.state = Object.assign({}, DeviceMode, {
       devices: props.devices,
