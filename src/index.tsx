@@ -9,6 +9,14 @@ const ViwerStyle = styled.div`
   height  100vh;
 `
 
+interface State {
+  devices: Array<Devices>,
+  src: string,
+  i18n: {
+    
+  }
+}
+
 export default class ReactDeviceMode extends Component {
 
   constructor(props) {

@@ -5,12 +5,8 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "jest",
-    "babel": "babel src --out-dir lib",
-    "build": "NODE_ENV=production webpack -p --config webpack.config.js",
-    "dev": "open http://localhost:8080/webpack-dev-server/ && webpack-dev-server --progress --colors --watch",
-    "start": "npm-run-all -p dev",
-    "prettier": "prettier ./src/**/*.js --write",
-    "storybook": "start-storybook -p 6006",
+    "babel": "babel src --out-dir lib --extensions \".ts,.tsx\"",
+    "start": "webpack-dev-server ./test/index.tsx --mode development --open",
     "build-storybook": "build-storybook",
     "deploy": "np --no-cleanup"
   },
@@ -19,7 +15,6 @@
   "dependencies": {
     "@material-ui/core": "^1.1.0",
     "axios": "^0.17.1",
-    "babel-preset-stage-0": "^6.24.1",
     "classnames": "^2.2.5",
     "clone": "^2.1.1",
     "enzyme": "^3.3.0",
@@ -48,16 +43,17 @@
     "styled-components": "^3.3.2"
   },
   "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/preset-typescript": "^7.0.0",
     "@storybook/addon-actions": "^3.3.3",
     "@storybook/addon-links": "^3.3.3",
     "@storybook/react": "^3.3.3",
-    "babel-cli": "^6.18.0",
-    "babel-core": "^6.22.1",
-    "babel-loader": "^6.2.10",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-polyfill": "^6.23.0",
-    "babel-preset-es2015": "^6.22.0",
-    "babel-preset-react": "^6.22.0",
+    "babel-loader": "^8.0.2",
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.26.1",
     "electron-prebuilt": "^1.4.13",
@@ -76,8 +72,10 @@
     "prettier": "^1.9.2",
     "sass-loader": "^4.1.0",
     "style-loader": "^0.13.1",
+    "typescript": "^3.0.3",
     "url-loader": "^0.5.7",
-    "webpack": "^3.8.1",
-    "webpack-dev-server": "^2.9.3"
+    "webpack": "^4.16.0",
+    "webpack-cli": "^3.0.8",
+    "webpack-dev-server": "^3.1.4"
   }
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import ReactDeviceMode from '../src/index.js';
+import ReactDeviceMode from '../src/index.tsx';
 
 render(<div>
   <link rel="stylesheet" href="http://acms.lab/themes/system/css/acms-admin.css" />
