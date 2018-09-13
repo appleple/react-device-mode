@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import Resizable from 're-resizable';
 import styled from 'styled-components';
+import { DeviceModeContextType } from '../type';
 
 const FrameLeft = 18;
 const FrameRight = 18;
@@ -98,7 +99,6 @@ import { DeviceModeContext } from '../context';
 export default class Device extends Component {
 
   iframe: HTMLElement;
-  ua: string;
 
   getRisizeConf(resizable) {
     const resizeConf = {
@@ -130,7 +130,7 @@ export default class Device extends Component {
   render () {
     
     return (<DeviceModeContext.Consumer>
-      {context => (
+      {(context: DeviceModeContextType) => (
         <DeviceContainer>
           <Resizable enable={this.getRisizeConf(context.state.resizable)} size={this.getSize(context.state)} onResizeStop={
             (e, direction, ref, d) => {
@@ -140,7 +140,6 @@ export default class Device extends Component {
             <DeviceWrapper resizable={context.state.resizable} scale={context.state.scale} height={context.state.height} orientation={context.state.orientation}>
               <DeviceScreen key={context.state.ua} src={`${context.state.src}?ua=${context.state.ua}`} innerRef={(iframe: HTMLElement) => {
                 this.iframe = iframe;
-                this.ua = context.ua;
               }}/>
             </DeviceWrapper>
           </Resizable>

@@ -17,7 +17,7 @@ export interface DeviceModeState extends DeviceProps {
   scale: number,
 }
 
-export interface DeviceModeContext {
+export interface DeviceModeContextType {
   state: DeviceModeState,
   actions: {
     updateWidth(width: number) : void,
