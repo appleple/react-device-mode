@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { DeviceModeContext } from '../context';
 import styled from 'styled-components';
+import { DeviceModeContextType } from '../type';
 
 const InputStyle = styled.input`
   font-size: 16px;
@@ -51,7 +52,7 @@ export default class Header extends Component {
   render () {
     return (<HeaderStyle>
       <DeviceModeContext.Consumer>
-        {context => 
+        {(context: DeviceModeContextType) => 
           <Fragment>
             <HeaderInner className="acms-admin-form">
             <select onChange={(e) => {context.actions.updateDevice(e.target.value)}}>
