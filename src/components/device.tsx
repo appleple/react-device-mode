@@ -97,6 +97,9 @@ import { DeviceModeContext } from '../context';
 
 export default class Device extends Component {
 
+  iframe: HTMLElement;
+  ua: string;
+
   getRisizeConf(resizable) {
     const resizeConf = {
       top: false,
@@ -134,8 +137,8 @@ export default class Device extends Component {
               context.actions.updateSize(context.state.width + d.width, context.state.height + d.height)
             } 
           }>
-            <DeviceWrapper resizable={context.state.resizable} scale={context.state.scale} height={context.state.height} orientation={context.state.orientation} resizable={context.state.resizable}>
-              <DeviceScreen key={context.state.ua} src={`${context.state.src}?ua=${context.state.ua}`} innerRef={(iframe) => {
+            <DeviceWrapper resizable={context.state.resizable} scale={context.state.scale} height={context.state.height} orientation={context.state.orientation}>
+              <DeviceScreen key={context.state.ua} src={`${context.state.src}?ua=${context.state.ua}`} innerRef={(iframe: HTMLElement) => {
                 this.iframe = iframe;
                 this.ua = context.ua;
               }}/>

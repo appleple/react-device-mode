@@ -4,22 +4,15 @@ import { DeviceModeContext, DeviceMode } from './context';
 import Header from './components/header';
 import Device from './components/device';
 import { setUserAgent } from './util';
+import { DeviceType, DeviceModeState, DeviceProps, I18n } from './type';
 
 const ViwerStyle = styled.div`
   height  100vh;
 `
 
-interface State {
-  devices: Array<Devices>,
-  src: string,
-  i18n: {
-    
-  }
-}
+export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeState> {
 
-export default class ReactDeviceMode extends Component {
-
-  constructor(props) {
+  constructor(props: { devices: DeviceType[], src: string, i18n: I18n}) {
     super(props);
     this.state = Object.assign({}, DeviceMode, {
       devices: props.devices,
@@ -36,7 +29,7 @@ export default class ReactDeviceMode extends Component {
     }
   }
 
-  updateDevice(deviceUA) {
+  updateDevice(deviceUA: string) {
     const { devices } = this.state;
     const device = devices.find((item) => {
       if (item.ua === deviceUA) {

@@ -1,9 +1,10 @@
 import React from 'react';
+import { DeviceModeState } from '../type';
 
-export const DeviceMode = {
+export const DeviceMode: DeviceModeState = {
+  devices: [],
   width: 375,
   height: 667,
-  ratio: 1,
   orientation: 'portrait',
   ua: '',
   src: '',
