@@ -46,7 +46,8 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
   }
 
   render () {
-    const {width, height} = this.state;
+	const {width, height} = this.state;
+	const { header, refreshTime } = this.props;
     return (<DeviceModeContext.Provider value={{
       state: this.state,
       actions: {
@@ -75,8 +76,8 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
       }
     }} >
       <ViwerStyle>
-        <Header />
-        <Device />
+        <Header header={header} />
+        <Device refreshTime={refreshTime} />
       </ViwerStyle>
     </DeviceModeContext.Provider>)
   }

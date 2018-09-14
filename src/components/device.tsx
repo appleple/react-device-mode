@@ -6,7 +6,7 @@ import { DeviceModeContextType } from '../type';
 
 const FrameLeft = 18;
 const FrameRight = 18;
-const FrameTop = 50;
+const FrameTop = 60;
 const FrameBottom = 70;
 
 const DeviceContainer = styled.div`
@@ -14,7 +14,7 @@ const DeviceContainer = styled.div`
   justify-content: center;
   background-color: #DDDDDD;
   height: 100vh;
-  padding-top: 50px;
+  padding-top: ${FrameTop}px;
   box-sizing: border-box;
   overflow: auto;
 `;
@@ -95,9 +95,16 @@ const DeviceScreen = styled.iframe`
   border-radius: 2px;
 `;
 
-export default class Device extends Component {
+export default class Device extends Component<{refreshTime: Date}, {refreshTime: Date}> {
 
   iframe: HTMLElement;
+
+  constructor(props) {
+	super(props);
+	this.state = {
+	  refreshTime: props.refreshTime || new Date()
+	};
+  }
 
   getRisizeConf(resizable) {
     const resizeConf = {
@@ -128,6 +135,8 @@ export default class Device extends Component {
 
   render () {
 
+	const { refreshTime } = this.props;
+
     return (<DeviceModeContext.Consumer>
       {(context: DeviceModeContextType) => (
         <DeviceContainer>
@@ -137,7 +146,7 @@ export default class Device extends Component {
             }
           }>
             <DeviceWrapper resizable={context.state.resizable} scale={context.state.scale} height={context.state.height} orientation={context.state.orientation}>
-              <DeviceScreen key={context.state.ua} src={`${context.state.src}?ua=${context.state.ua}`} innerRef={(iframe: HTMLElement) => {
+              <DeviceScreen src={`${context.state.src}?time=${refreshTime}`} innerRef={(iframe: HTMLElement) => {
                 this.iframe = iframe;
               }}/>
             </DeviceWrapper>

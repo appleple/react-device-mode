@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component, Fragment, ReactNode } from 'react';
 import { DeviceModeContext } from '../context';
 import styled from 'styled-components';
 import { DeviceModeContextType } from '../type';
@@ -21,7 +21,7 @@ const InputStyle = styled.input`
 const HeaderStyle = styled.header`
   background-color : #e9e9e9;
   padding: 5px 10px;
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -54,13 +54,14 @@ const DismissBtn = styled.button`
   color: #333;
 `
 
-export default class Header extends Component {
+export default class Header extends Component<{ header: ReactNode }, null> {
   render () {
     return (<HeaderStyle>
       <DeviceModeContext.Consumer>
         {(context: DeviceModeContextType) =>
           <Fragment>
             <HeaderInner className="acms-admin-form">
+			{this.props.header}
             <select onChange={(e) => {context.actions.updateDevice(e.target.value)}}>
               {context.state.devices.map(device => <option value={device.ua}>{device.name}</option>)}
             </select>

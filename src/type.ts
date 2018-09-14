@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export interface I18n {
   fitWindow: string
 }
@@ -9,7 +11,9 @@ export interface Device {
 }
 
 export interface DeviceProps extends Device {
-  onClose?(): void
+  onClose?(): void,
+  header?: ReactNode,
+  refreshTime?: Date
 }
 
 export interface DeviceModeState extends Device {
