@@ -6,7 +6,7 @@ import { DeviceModeContextType } from '../type';
 const InputStyle = styled.input`
   font-size: 16px;
   padding: 4px 5px !important;
-  width: 50px;
+  width: 80px;
   color: #333;
   line-height: 1;
   vertical-align: middle;
@@ -54,6 +54,14 @@ const DismissBtn = styled.button`
   color: #333;
 `
 
+const RotateIcon = styled.span`
+  background:url('data:image/svg+xml;base64,PHN2ZyBpZD0i44Os44Kk44Ok44O8XzEiIGRhdGEtbmFtZT0i44Os44Kk44Ok44O8IDEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgNDAgNDAiPjx0aXRsZT7jgqLjg7zjg4jjg5zjg7zjg4kgMSDjga7jgrPjg5Tjg7wgMzwvdGl0bGU+PHBhdGggZD0iTTM0LjY4LDI3LjM4LDIxLjc0LDIuNTNhMS44OCwxLjg4LDAsMCwwLTIuNTMtLjc5TDYuMDYsOC41OWExLjg2LDEuODYsMCwwLDAtLjc5LDIuNTJMMTguMiwzNmExLjg3LDEuODcsMCwwLDAsMi41My44TDMzLjg4LDI5LjlBMS44NywxLjg3LDAsMCwwLDM0LjY4LDI3LjM4Wk0xOC40MiwzMi4yMiw3LjgyLDExLjg2bDEzLjA3LTYuOCwxMC42LDIwLjM1WiIvPjxwb2x5bGluZSBwb2ludHM9IjI2LjY2IDguMjIgMjUuMjUgNC4wMyAyOS40NCAyLjYxIiBmaWxsPSJub25lIiBzdHJva2U9IiMyMzE4MTUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwb2x5bGluZSBwb2ludHM9IjEzLjkgMzIuMTMgMTUuMjggMzYuMzQgMTEuMDcgMzcuNzIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzIzMTgxNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PHBhdGggZD0iTTI1LjM5LDQuMjJjLjUzLjE4LDEuMDUuMzksMS41Ni42MmExNi43NSwxNi43NSwwLDAsMSw5Ljc3LDE1LjIzYzAsLjU1LDAsMS4xLS4wOCwxLjY0YTE2LjksMTYuOSwwLDAsMS0uNTgsMyIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0zLjIzLDIwLjA3cTAtLjc1LjA2LTEuNDdhMTcuMSwxNy4xLDAsMCwxLC41NC0zTC0uNzIsMTgsMTAuMDksMzguNDcsMTQuOCwzNkExNi43NCwxNi43NCwwLDAsMSwzLjIzLDIwLjA3WiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0zLjgzLDE1LjYzYTE3LjEsMTcuMSwwLDAsMC0uNTQsM3EtLjA2LjcyLS4wNiwxLjQ3QTE2Ljc0LDE2Ljc0LDAsMCwwLDE0LjgsMzYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzIzMTgxNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiLz48cGF0aCBkPSJNMzYuMDYsMjQuNzRhMTYuOSwxNi45LDAsMCwwLC41OC0zYzAtLjU0LjA4LTEuMDkuMDgtMS42NEExNi43NSwxNi43NSwwLDAsMCwyNyw0Ljg0Yy0uNTEtLjIzLTEtLjQ0LTEuNTYtLjYyIiBmaWxsPSJub25lIiBzdHJva2U9IiMyMzE4MTUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIi8+PC9zdmc+');
+  background-size: cover;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+`
+
 export default class Header extends Component<{ header: ReactNode }, null> {
   render () {
     return (<HeaderStyle>
@@ -84,7 +92,7 @@ export default class Header extends Component<{ header: ReactNode }, null> {
               </InputGroup>
               {context.state.resizable === false &&
                 <InputGroup>
-                  <BtnStyle onClick={context.actions.switchOrientation} className="acms-admin-btn">Portrait</BtnStyle>
+                  <BtnStyle onClick={context.actions.switchOrientation} className="acms-admin-btn" style={{ padding: '5px 10px'}}><RotateIcon /></BtnStyle>
                 </InputGroup>
               }
             </HeaderInner>

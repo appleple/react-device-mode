@@ -10,10 +10,19 @@ export interface Device {
   i18n: I18n
 }
 
+interface getUrlFunc {
+  (option: {
+	url: string,
+  	ua: string,
+	refreshTime: Date
+  }): string;
+}
+
 export interface DeviceProps extends Device {
   onClose?(): void,
   header?: ReactNode,
-  refreshTime?: Date
+  refreshTime?: Date,
+  getUrl?: getUrlFunc
 }
 
 export interface DeviceModeState extends Device {

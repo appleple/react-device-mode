@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import Resizable from 're-resizable';
 import styled from 'styled-components';
 import { DeviceModeContext } from '../context';
-import { DeviceModeContextType } from '../type';
+import { DeviceModeContextType, getUrlFunc } from '../type';
 
 const FrameLeft = 18;
 const FrameRight = 18;
@@ -95,7 +95,7 @@ const DeviceScreen = styled.iframe`
   border-radius: 2px;
 `;
 
-export default class Device extends Component<{refreshTime: Date}, {refreshTime: Date}> {
+export default class Device extends Component<{refreshTime: Date, getUrl: getUrlFunc}, {refreshTime: Date}> {
 
   iframe: HTMLElement;
 
@@ -104,6 +104,10 @@ export default class Device extends Component<{refreshTime: Date}, {refreshTime:
 	this.state = {
 	  refreshTime: props.refreshTime || new Date()
 	};
+  }
+
+  static defaultProps = {
+	getUrl: ({ url, refreshTime, ua} ) => url
   }
 
   getRisizeConf(resizable) {
@@ -146,7 +150,11 @@ export default class Device extends Component<{refreshTime: Date}, {refreshTime:
             }
           }>
             <DeviceWrapper resizable={context.state.resizable} scale={context.state.scale} height={context.state.height} orientation={context.state.orientation}>
-              <DeviceScreen src={`${context.state.src}?time=${refreshTime}`} innerRef={(iframe: HTMLElement) => {
+              <DeviceScreen src={this.props.getUrl({
+				url: context.state.src,
+				refreshTime: refreshTime,
+				ua: context.state.ua
+			  })} innerRef={(iframe: HTMLElement) => {
                 this.iframe = iframe;
               }}/>
             </DeviceWrapper>
