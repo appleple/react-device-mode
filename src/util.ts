@@ -1,23 +1,19 @@
-export const setUserAgent = (window, userAgent) => {
-  // Works on Firefox, Chrome, Opera and IE9+
-  if (navigator.__defineGetter__) {
-    navigator.__defineGetter__('userAgent', () => userAgent);
-  } else if (Object.defineProperty) {
-    Object.defineProperty(navigator, 'userAgent', {
-      get: () => userAgent
-    });
+export const onIframeUrlChange = (iframe: HTMLIFrameElement, callback: Function): void => {
+  const unloadHandler = () => {
+    // Timeout needed because the URL changes immediately after
+    // the `unload` event is dispatched.
+    setTimeout(() => {
+      callback(iframe.contentWindow.location.href);
+    }, 0);
+  };
+
+  const attachUnload = () => {
+      // Remove the unloadHandler in case it was already attached.
+      // Otherwise, the change will be dispatched twice.
+      iframe.contentWindow.removeEventListener("unload", unloadHandler);
+      iframe.contentWindow.addEventListener("unload", unloadHandler);
   }
-  // Works on Safari
-  if (window.navigator.userAgent !== userAgent) {
-    const userAgentProp = {
-      get: () => userAgent
-    };
-    try {
-      Object.defineProperty(window.navigator, 'userAgent', userAgentProp);
-    } catch (e) {
-      window.navigator = Object.create(navigator, {
-        userAgent: userAgentProp
-      });
-    }
-  }
-};
+
+  iframe.addEventListener("load", attachUnload);
+  attachUnload();
+}

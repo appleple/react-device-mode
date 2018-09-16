@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { DeviceModeContext, DeviceMode } from './context';
 import Header from './components/header';
 import Device from './components/device';
-import { setUserAgent } from './util';
 import { DeviceModeState, DeviceProps } from './type';
 
 const ViwerStyle = styled.div`
@@ -41,7 +40,6 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
       }
       return false;
     });
-    setUserAgent(window, deviceUA);
     this.setState(device);
   }
 

@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import Resizable from 're-resizable';
 import styled, { keyframes } from 'styled-components';
 import { DeviceModeContext } from '../context';
+import { onIframeUrlChange} from '../util';
 import { DeviceModeContextType, getUrlFunc } from '../type';
 
 const FrameLeft = 18;
@@ -150,6 +151,13 @@ export default class Device extends Component<{ refreshTime: Date, getUrl: getUr
     return { width: height, height: width }
   }
 
+  componentDidMount() {
+    const { iframe } = this;
+    onIframeUrlChange(iframe, (url) => {
+      console.log(url);
+    })
+  }
+
   render() {
 
     const { refreshTime } = this.props;
@@ -167,7 +175,7 @@ export default class Device extends Component<{ refreshTime: Date, getUrl: getUr
                 url: context.state.src,
                 refreshTime: refreshTime,
                 ua: context.state.ua
-              })} innerRef={(iframe: HTMLElement) => {
+              })} innerRef={(iframe: HTMLIframeElement) => {
                 this.iframe = iframe;
               }} />
             </DeviceWrapper>
