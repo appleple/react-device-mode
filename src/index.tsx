@@ -30,7 +30,7 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
   }
 
   componentDidCatch(error, info) {
-	console.log(error, info);
+    console.log(error, info);
   }
 
   updateDevice(deviceUA: string) {
@@ -45,15 +45,15 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
     this.setState(device);
   }
 
-  render () {
-	const {width, height} = this.state;
-	const { header, refreshTime, getUrl } = this.props;
+  render() {
+    const { width, height } = this.state;
+    const { header, refreshTime, getUrl } = this.props;
     return (<DeviceModeContext.Provider value={{
       state: this.state,
       actions: {
         updateWidth: (width) => this.setState({ width }),
         updateHeight: (height) => this.setState({ height }),
-        updateSize: (width, height) => this.setState({width, height}),
+        updateSize: (width, height) => this.setState({ width, height }),
         updateDevice: (deviceUA) => this.updateDevice(deviceUA),
         updateScale: (scale) => this.setState({ scale }),
         switchOrientation: () => {
@@ -67,12 +67,12 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
               orientation: 'portrait'
             });
           }
-		},
-		onClose: () => {
-		  if (this.props.onClose) {
-		    this.props.onClose();
-		  }
-		}
+        },
+        onClose: () => {
+          if (this.props.onClose) {
+            this.props.onClose();
+          }
+        }
       }
     }} >
       <ViwerStyle>

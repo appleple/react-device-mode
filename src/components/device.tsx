@@ -33,7 +33,7 @@ const DeviceWrapper = styled.div`
     }
   }});
   transform-origin: top center;
-  ${props => props.resizable ? '': `
+  ${props => props.resizable ? '' : `
   ${props.orientation === 'portrait' || props.resizable === true ? `
     padding-top: ${FrameTop}px;
     padding-left: ${FrameLeft}px;
@@ -45,7 +45,7 @@ const DeviceWrapper = styled.div`
     padding-right: ${FrameBottom}px;
     padding-bottom: ${FrameLeft}px;
   `
-  }
+    }
   border-radius: 35px;
   clear: both;
   background: #333;
@@ -95,19 +95,19 @@ const DeviceScreen = styled.iframe`
   border-radius: 2px;
 `;
 
-export default class Device extends Component<{refreshTime: Date, getUrl: getUrlFunc}, {refreshTime: Date}> {
+export default class Device extends Component<{ refreshTime: Date, getUrl: getUrlFunc }, { refreshTime: Date }> {
 
   iframe: HTMLElement;
 
   constructor(props) {
-	super(props);
-	this.state = {
-	  refreshTime: props.refreshTime || new Date()
-	};
+    super(props);
+    this.state = {
+      refreshTime: props.refreshTime || new Date()
+    };
   }
 
   static defaultProps = {
-	getUrl: ({ url, refreshTime, ua} ) => url
+    getUrl: ({ url, refreshTime, ua }) => url
   }
 
   getRisizeConf(resizable) {
@@ -137,9 +137,9 @@ export default class Device extends Component<{refreshTime: Date, getUrl: getUrl
     return { width: height, height: width }
   }
 
-  render () {
+  render() {
 
-	const { refreshTime } = this.props;
+    const { refreshTime } = this.props;
 
     return (<DeviceModeContext.Consumer>
       {(context: DeviceModeContextType) => (
@@ -151,12 +151,12 @@ export default class Device extends Component<{refreshTime: Date, getUrl: getUrl
           }>
             <DeviceWrapper resizable={context.state.resizable} scale={context.state.scale} height={context.state.height} orientation={context.state.orientation}>
               <DeviceScreen src={this.props.getUrl({
-				url: context.state.src,
-				refreshTime: refreshTime,
-				ua: context.state.ua
-			  })} innerRef={(iframe: HTMLElement) => {
+                url: context.state.src,
+                refreshTime: refreshTime,
+                ua: context.state.ua
+              })} innerRef={(iframe: HTMLElement) => {
                 this.iframe = iframe;
-              }}/>
+              }} />
             </DeviceWrapper>
           </Resizable>
         </DeviceContainer>

@@ -12,9 +12,9 @@ export interface Device {
 
 interface getUrlFunc {
   (option: {
-	url: string,
-  	ua: string,
-	refreshTime: Date
+    url: string,
+    ua: string,
+    refreshTime: Date
   }): string;
 }
 
@@ -37,13 +37,13 @@ export interface DeviceModeState extends Device {
 export interface DeviceModeContextType {
   state: DeviceModeState,
   actions: {
-    updateWidth(width: number) : void,
-    updateHeight(width: number) : void,
-    updateSize(width: number, height: number) : void,
-    updateDevice(deviceUA: string) : void,
-    updateScale(scale: number) : number,
-	switchOrientation() : void,
-	onClose() : void
+    updateWidth(width: number): void,
+    updateHeight(width: number): void,
+    updateSize(width: number, height: number): void,
+    updateDevice(deviceUA: string): void,
+    updateScale(scale: number): number,
+    switchOrientation(): void,
+    onClose(): void
   }
 }
 

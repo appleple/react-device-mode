@@ -63,20 +63,20 @@ const RotateIcon = styled.span`
 `
 
 export default class Header extends Component<{ header: ReactNode }, null> {
-  render () {
+  render() {
     return (<HeaderStyle>
       <DeviceModeContext.Consumer>
         {(context: DeviceModeContextType) =>
           <Fragment>
             <HeaderInner className="acms-admin-form">
-			{this.props.header}
-            <select onChange={(e) => {context.actions.updateDevice(e.target.value)}}>
-              {context.state.devices.map(device => <option value={device.ua}>{device.name}</option>)}
-            </select>
+              {this.props.header}
+              <select onChange={(e) => { context.actions.updateDevice(e.target.value) }}>
+                {context.state.devices.map(device => <option value={device.ua}>{device.name}</option>)}
+              </select>
               <InputGroup>
-              <InputStyle type="number" value={context.state.width} onInput={(e: React.FormEvent<HTMLInputElement>) => {context.actions.updateWidth(parseInt(e.target.value))}} disabled={context.state.resizable !== true} />
-              <InputDevider>×</InputDevider>
-              <InputStyle type="number" value={context.state.height} onInput={(e: React.FormEvent<HTMLInputElement>) => {context.actions.updateHeight(parseInt(e.target.value))}} disabled={context.state.resizable !== true}/>
+                <InputStyle type="number" value={context.state.width} onInput={(e: React.FormEvent<HTMLInputElement>) => { context.actions.updateWidth(parseInt(e.target.value)) }} disabled={context.state.resizable !== true} />
+                <InputDevider>×</InputDevider>
+                <InputStyle type="number" value={context.state.height} onInput={(e: React.FormEvent<HTMLInputElement>) => { context.actions.updateHeight(parseInt(e.target.value)) }} disabled={context.state.resizable !== true} />
               </InputGroup>
               <InputGroup>
                 <select value={context.state.scale} onChange={(e: { target: HTMLSelectElement }) => {
@@ -92,11 +92,11 @@ export default class Header extends Component<{ header: ReactNode }, null> {
               </InputGroup>
               {context.state.resizable === false &&
                 <InputGroup>
-                  <BtnStyle onClick={context.actions.switchOrientation} className="acms-admin-btn" style={{ padding: '5px 10px'}}><RotateIcon /></BtnStyle>
+                  <BtnStyle onClick={context.actions.switchOrientation} className="acms-admin-btn" style={{ padding: '5px 10px' }}><RotateIcon /></BtnStyle>
                 </InputGroup>
               }
             </HeaderInner>
-			<DismissBtn onClick={context.actions.onClose}>x</DismissBtn>
+            <DismissBtn onClick={context.actions.onClose}>x</DismissBtn>
           </Fragment>
         }
       </DeviceModeContext.Consumer>
