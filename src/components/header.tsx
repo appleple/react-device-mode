@@ -5,7 +5,6 @@ import { DeviceModeContextType } from '../type';
 
 const InputStyle = styled.input`
   font-size: 16px;
-  padding: 4px 5px !important;
   width: 80px;
   color: #333;
   line-height: 1;

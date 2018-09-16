@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import Resizable from 're-resizable';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { DeviceModeContext } from '../context';
 import { DeviceModeContextType, getUrlFunc } from '../type';
 
@@ -8,6 +8,18 @@ const FrameLeft = 18;
 const FrameRight = 18;
 const FrameTop = 60;
 const FrameBottom = 70;
+
+const deviceAnimation = keyframes`
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+`
 
 const DeviceContainer = styled.div`
   display: flex;
@@ -25,6 +37,7 @@ const DeviceWrapper = styled.div`
   width: 100%;
   height: 100%;
   position: relative;
+  animation ${deviceAnimation} .5s ease-out;
   transform: scale(${(props) => {
     if (props.scale === -1) {
       return (window.innerHeight - 235) / props.height
