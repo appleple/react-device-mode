@@ -48,11 +48,43 @@ const BtnStyle = styled.button``;
 
 const DismissBtn = styled.button`
   position: absolute;
-  right: 40px;
-  top: 8px;
+  background: transparent;
   border: none;
-  color: #333;
+  display: block;
+  right: 40px;
+  top: 10px;
+  width: 18px;
+  height: 18px;
+  padding: 0;
 `
+
+const DismissBtnLine = styled.span`
+  display: block;
+  color: #333;
+  width: 18px;
+  height: 2px;
+  position: relative;
+  &:before,
+  &:after {
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 2px;
+    content: '';
+    transition: .3s all;
+    border-radius: 1px;
+    background-color: #333;
+    width 22px;
+  }
+  &:before {
+    transform: translate(-2px, 6px) rotate(45deg);
+    top: -6px;
+  }
+  &:after {
+    transform: translate(-2px, -6px) rotate(-45deg);
+    bottom: -6px;
+  }
+`;
 
 const RotateIcon = styled.span`
   background:url('data:image/svg+xml;base64,PHN2ZyBpZD0i44Os44Kk44Ok44O8XzEiIGRhdGEtbmFtZT0i44Os44Kk44Ok44O8IDEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgNDAgNDAiPjx0aXRsZT7jgqLjg7zjg4jjg5zjg7zjg4kgMSDjga7jgrPjg5Tjg7wgMzwvdGl0bGU+PHBhdGggZD0iTTM0LjY4LDI3LjM4LDIxLjc0LDIuNTNhMS44OCwxLjg4LDAsMCwwLTIuNTMtLjc5TDYuMDYsOC41OWExLjg2LDEuODYsMCwwLDAtLjc5LDIuNTJMMTguMiwzNmExLjg3LDEuODcsMCwwLDAsMi41My44TDMzLjg4LDI5LjlBMS44NywxLjg3LDAsMCwwLDM0LjY4LDI3LjM4Wk0xOC40MiwzMi4yMiw3LjgyLDExLjg2bDEzLjA3LTYuOCwxMC42LDIwLjM1WiIvPjxwb2x5bGluZSBwb2ludHM9IjI2LjY2IDguMjIgMjUuMjUgNC4wMyAyOS40NCAyLjYxIiBmaWxsPSJub25lIiBzdHJva2U9IiMyMzE4MTUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwb2x5bGluZSBwb2ludHM9IjEzLjkgMzIuMTMgMTUuMjggMzYuMzQgMTEuMDcgMzcuNzIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzIzMTgxNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PHBhdGggZD0iTTI1LjM5LDQuMjJjLjUzLjE4LDEuMDUuMzksMS41Ni42MmExNi43NSwxNi43NSwwLDAsMSw5Ljc3LDE1LjIzYzAsLjU1LDAsMS4xLS4wOCwxLjY0YTE2LjksMTYuOSwwLDAsMS0uNTgsMyIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0zLjIzLDIwLjA3cTAtLjc1LjA2LTEuNDdhMTcuMSwxNy4xLDAsMCwxLC41NC0zTC0uNzIsMTgsMTAuMDksMzguNDcsMTQuOCwzNkExNi43NCwxNi43NCwwLDAsMSwzLjIzLDIwLjA3WiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0zLjgzLDE1LjYzYTE3LjEsMTcuMSwwLDAsMC0uNTQsM3EtLjA2LjcyLS4wNiwxLjQ3QTE2Ljc0LDE2Ljc0LDAsMCwwLDE0LjgsMzYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzIzMTgxNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiLz48cGF0aCBkPSJNMzYuMDYsMjQuNzRhMTYuOSwxNi45LDAsMCwwLC41OC0zYzAtLjU0LjA4LTEuMDkuMDgtMS42NEExNi43NSwxNi43NSwwLDAsMCwyNyw0Ljg0Yy0uNTEtLjIzLTEtLjQ0LTEuNTYtLjYyIiBmaWxsPSJub25lIiBzdHJva2U9IiMyMzE4MTUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIi8+PC9zdmc+');
@@ -96,7 +128,9 @@ export default class Header extends Component<{ header: ReactNode }, null> {
                 </InputGroup>
               }
             </HeaderInner>
-            <DismissBtn onClick={context.actions.onClose}>x</DismissBtn>
+            <DismissBtn onClick={context.actions.onClose}>
+              <DismissBtnLine />
+            </DismissBtn>
           </Fragment>
         }
       </DeviceModeContext.Consumer>
