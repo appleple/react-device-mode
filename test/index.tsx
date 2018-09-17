@@ -4,7 +4,7 @@ import ReactDeviceMode from '../src/index.tsx';
 
 render(<div>
   <link rel="stylesheet" href="https://developer.a-blogcms.jp/themes/system/css/acms-admin.css" />
-  <ReactDeviceMode src='https://developer.a-blogcms.jp' i18n={ {fitWindow: '画面サイズにあわせる'} } devices={[
+  <ReactDeviceMode src='/test/test.html' i18n={ {fitWindow: '画面サイズにあわせる'} } devices={[
   {
     name: 'iPhone 6',
     ua: 'Mozilla/5.0 (iPad; CPU OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1',
@@ -26,4 +26,6 @@ render(<div>
     height: 640,
     resizable: false
   }
-]} onClose={() => console.log('closed')}/></div>, document.querySelector('#root'));
+]} 
+onUrlChange={(url) => console.log(`url is changed to ${url}`)}
+onClose={() => console.log('closed')}/></div>, document.querySelector('#root'));

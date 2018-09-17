@@ -1,12 +1,24 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { DeviceModeContext, DeviceMode } from './context';
 import Header from './components/header';
 import Device from './components/device';
 import { DeviceModeState, DeviceProps } from './type';
 
+
+const showAnimation = keyframes`
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+`
+
 const ViwerStyle = styled.div`
   height  100vh;
+  animation ${showAnimation} .5s ease-out;
 `
 
 export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeState> {
@@ -43,6 +55,12 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
     this.setState(device);
   }
 
+  onUrlChange(url) {
+    if (this.props.onUrlChange) {
+      this.props.onUrlChange(url);
+    }
+  }
+
   render() {
     const { width, height } = this.state;
     const { header, refreshTime, getUrl } = this.props;
@@ -75,7 +93,7 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
     }} >
       <ViwerStyle>
         <Header header={header} />
-        <Device refreshTime={refreshTime} getUrl={getUrl} />
+        <Device refreshTime={refreshTime} getUrl={getUrl} onUrlChange={this.onUrlChange.bind(this)} />
       </ViwerStyle>
     </DeviceModeContext.Provider>)
   }

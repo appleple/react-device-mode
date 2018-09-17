@@ -3,7 +3,11 @@ export const onIframeUrlChange = (iframe: HTMLIFrameElement, callback: Function)
     // Timeout needed because the URL changes immediately after
     // the `unload` event is dispatched.
     setTimeout(() => {
-      callback(iframe.contentWindow.location.href);
+      try {
+        callback(iframe.contentDocument.location.href);
+      } catch (e) {
+        console.log(e);
+      }
     }, 0);
   };
 

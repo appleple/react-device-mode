@@ -109,7 +109,7 @@ const DeviceScreen = styled.iframe`
   border-radius: 2px;
 `;
 
-export default class Device extends Component<{ refreshTime: Date, getUrl: getUrlFunc }, { refreshTime: Date }> {
+export default class Device extends Component<{ refreshTime: Date, getUrl: getUrlFunc, onUrlChange: Function }, { refreshTime: Date }> {
 
   iframe: HTMLElement;
 
@@ -154,7 +154,9 @@ export default class Device extends Component<{ refreshTime: Date, getUrl: getUr
   componentDidMount() {
     const { iframe } = this;
     onIframeUrlChange(iframe, (url) => {
-      console.log(url);
+      if (this.props.onUrlChange) {
+        this.props.onUrlChange(url);
+      }
     })
   }
 

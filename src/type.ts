@@ -22,7 +22,8 @@ export interface DeviceProps extends Device {
   onClose?(): void,
   header?: ReactNode,
   refreshTime?: Date,
-  getUrl?: getUrlFunc
+  getUrl?: getUrlFunc,
+  onUrlChange(url: string): any
 }
 
 export interface DeviceModeState extends Device {
