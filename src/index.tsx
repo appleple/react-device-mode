@@ -44,10 +44,10 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
     console.log(error, info);
   }
 
-  updateDevice(deviceUA: string) {
+  updateDevice(deviceName: string) {
     const { devices } = this.state;
     const device = devices.find((item) => {
-      if (item.ua === deviceUA) {
+      if (item.name === deviceName) {
         return true;
       }
       return false;
