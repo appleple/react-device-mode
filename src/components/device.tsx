@@ -27,13 +27,13 @@ const DeviceContainer = styled.div`
   justify-content: center;
   background-color: #DDDDDD;
   height: 100vh;
-  padding-top: ${FrameTop}px;
+  padding-top: ${FrameTop + 20}px;
   box-sizing: border-box;
   overflow: auto;
 `;
 
 const DeviceWrapper = styled.div`
-  margin: 20px auto;
+  margin: 0 auto;
   border: 2px solid #bcbcbc;
   width: 100%;
   height: 100%;
@@ -109,7 +109,7 @@ const DeviceScreen = styled.iframe`
   border-radius: 2px;
 `;
 
-export default class Device extends Component<{ refreshTime: Date, getUrl: getUrlFunc, onUrlChange: Function }, { refreshTime: Date }> {
+export default class Device extends Component<{ refreshTime: Date, getUrl: getUrlFunc, onUrlChange: Function ,}, { refreshTime: Date }> {
 
   iframe: HTMLElement;
 
@@ -143,9 +143,12 @@ export default class Device extends Component<{ refreshTime: Date, getUrl: getUr
   }
 
   getSize(state) {
+	if (state.resizable) {
+	  return { width: state.width + 2, height: state.height + 2};
+	}
     const width = state.width + FrameLeft + FrameRight + 6;
     const height = state.height + FrameTop + FrameBottom + 6;
-    if (state.orientation === 'portrait' || state.resizable === true) {
+    if (state.orientation === 'portrait') {
       return { width, height }
     }
     return { width: height, height: width }
