@@ -35,8 +35,8 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
   componentDidMount() {
     const { devices } = this.state;
     if (devices && devices.length) {
-      const firstUA = devices[0].ua;
-      this.updateDevice(firstUA);
+      const deviceName = devices[0].name;
+      this.updateDevice(deviceName);
     }
   }
 
