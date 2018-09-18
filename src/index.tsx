@@ -61,6 +61,12 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
     }
   }
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+	if (nextProps.src && prevState.src !== nextProps.src) {
+	  return { src: nextProps.src }
+	}
+  }
+
   render() {
     const { width, height } = this.state;
     const { header, refreshTime, getUrl } = this.props;
