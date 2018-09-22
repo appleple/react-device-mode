@@ -10,23 +10,36 @@ render(<div style={{height: '100vh'}}>
     ua: 'Mozilla/5.0 (iPad; CPU OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1',
     width: 375,
     height: 667,
-    resizable: false
+    resizable: false,
+    hasFrame: true
   },
   {
     name: 'PC',
     ua: 'none',
     width: 768,
     height: 768,
-    resizable: true
+    resizable: true,
+    hasFrame: false
+  },
+  {
+    name: 'iPhone X',
+    ua: 'none',
+    width: 375,
+    height: 812,
+    resizable: false,
+    hasFrame: false
   },
   {
     name: 'Galaxy S9+ SCV39',
     ua: 'Mozilla/5.0 (Linux; Android 8.0.0; SCV39 Build/16NW) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/7.0 Chrome/59.0.3071.125 Mobile Safari/537.36',
     width: 360,
     height: 640,
-    resizable: false
+    resizable: false,
+    hasFrame: true
   }
 ]} 
 onUrlChange={(url) => console.log(`url is changed to ${url}`)}
 getIframe={(iframe) => console.log(iframe)}
-onClose={() => console.log('closed')}/></div>, document.querySelector('#root'));
+onClose={() => console.log('closed')}
+isLoading={true}
+/></div>, document.querySelector('#root'));

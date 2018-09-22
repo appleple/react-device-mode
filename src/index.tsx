@@ -24,7 +24,8 @@ const ViwerStyle = styled.div`
 export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeState> {
 
   static defaultProps = {
-    hasCloseBtn: true
+    hasCloseBtn: true,
+    isLoading: false
   }
 
   constructor(props: DeviceProps) {
@@ -83,7 +84,7 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
 
   render() {
     const { width, height } = this.state;
-    const { header, refreshTime, getUrl, hasCloseBtn } = this.props;
+    const { header, refreshTime, getUrl, hasCloseBtn, isLoading } = this.props;
     return (<DeviceModeContext.Provider value={{
       state: this.state,
       actions: {
@@ -113,7 +114,13 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
     }} >
       <ViwerStyle>
         <Header header={header} hasCloseBtn={hasCloseBtn}/>
-        <Device refreshTime={refreshTime} getUrl={getUrl} onUrlChange={this.onUrlChange.bind(this)} getIframe={(iframe) => { this.getIframe(iframe) }}/>
+        <Device 
+          refreshTime={refreshTime} 
+          getUrl={getUrl}
+          isLoading={isLoading}
+          onUrlChange={this.onUrlChange.bind(this)} 
+          getIframe={(iframe) => { this.getIframe(iframe) }}
+        />
       </ViwerStyle>
     </DeviceModeContext.Provider>)
   }

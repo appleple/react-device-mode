@@ -9,6 +9,7 @@ export const DeviceMode: DeviceModeState = {
   ua: '',
   src: '',
   resizable: false,
+  hasFrame: false,
   scale: 100,
   i18n: {
     fitWindow: 'fitWindow'

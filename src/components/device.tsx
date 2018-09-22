@@ -22,6 +22,21 @@ const deviceAnimation = keyframes`
   }
 `
 
+const spinnerAnimation = keyframes`
+  0% {
+    opacity: .4;
+    transform: rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: rotate(180deg);
+  }
+  100% {
+    opacity: .4;
+    transform: rotate(360deg);
+  }
+`
+
 const DeviceContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -47,7 +62,7 @@ const DeviceWrapper = styled.div`
     }
   }});
   transform-origin: top center;
-  ${props => props.resizable ? '' : `
+  ${props => (props.resizable || !props.hasFrame ) ? '' : `
   ${props.orientation === 'portrait' || props.resizable === true ? `
     padding-top: ${FrameTop}px;
     padding-left: ${FrameLeft}px;
@@ -107,9 +122,37 @@ const DeviceScreen = styled.iframe`
   box-sizing: border-box;
   border: 1px solid #CCC;
   border-radius: 2px;
+  ${props => !props.isLoading ?'display: block;' : 'display: none;'}
 `;
 
+const LoadingScreen = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: #eee;
+  position: relative;
+`;
+
+const Spinner = styled.div`
+  position: absolute;
+  z-index: 101;
+  top: 50%;
+  left: 50%;
+  width: 30px;
+  height: 30px;
+  margin-top: -15px;
+  margin-left: -15px;
+  border: 8px solid #333;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: ${spinnerAnimation} .5s infinite linear;
+`
+
 export default class Device extends Component<DeviceComponentProps, { refreshTime: Date }> {
+
+  static defaultProps = {
+    isLoading: false,
+    getUrl: ({ url, refreshTime, ua }) => url
+  }
 
   iframe: HTMLElement;
 
@@ -118,10 +161,6 @@ export default class Device extends Component<DeviceComponentProps, { refreshTim
     this.state = {
       refreshTime: props.refreshTime || new Date()
     };
-  }
-
-  static defaultProps = {
-    getUrl: ({ url, refreshTime, ua }) => url
   }
 
   getRisizeConf(resizable) {
@@ -143,7 +182,7 @@ export default class Device extends Component<DeviceComponentProps, { refreshTim
   }
 
   getSize(state) {
-    if (state.resizable) {
+    if (!state.hasFrame) {
       return { width: state.width + 2, height: state.height + 2};
     }
     const width = state.width + FrameLeft + FrameRight + 6;
@@ -168,7 +207,7 @@ export default class Device extends Component<DeviceComponentProps, { refreshTim
 
   render() {
 
-    const { refreshTime } = this.props;
+    const { refreshTime, isLoading } = this.props;
 
     return (<DeviceModeContext.Consumer>
       {(context: DeviceModeContextType) => (
@@ -178,14 +217,26 @@ export default class Device extends Component<DeviceComponentProps, { refreshTim
               context.actions.updateSize(context.state.width + d.width, context.state.height + d.height)
             }
           }>
-            <DeviceWrapper resizable={context.state.resizable} scale={context.state.scale} height={context.state.height} orientation={context.state.orientation}>
-              <DeviceScreen src={this.props.getUrl({
-                url: context.state.src,
-                refreshTime: refreshTime,
-                ua: context.state.ua
-              })} innerRef={(iframe: HTMLIframeElement) => {
-                this.iframe = iframe;
-              }} />
+            <DeviceWrapper 
+              resizable={context.state.resizable} 
+              scale={context.state.scale} 
+              height={context.state.height} 
+              orientation={context.state.orientation}
+              hasFrame={context.state.hasFrame}>
+              {isLoading &&
+                <LoadingScreen>
+                  <Spinner />
+                </LoadingScreen>
+              }
+              <DeviceScreen 
+                isLoading={isLoading} 
+                src={this.props.getUrl({
+                  url: context.state.src,
+                  refreshTime: refreshTime,
+                  ua: context.state.ua
+                })} innerRef={(iframe: HTMLIframeElement) => {
+                  this.iframe = iframe;
+                }} />
             </DeviceWrapper>
           </Resizable>
         </DeviceContainer>
