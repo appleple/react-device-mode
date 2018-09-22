@@ -9,7 +9,7 @@
     "start": "webpack-dev-server ./test/index.tsx --mode development --open",
     "build-storybook": "build-storybook",
     "build": "webpack ./test/index.tsx --development",
-    "deploy": "np --no-cleanup"
+    "deploy": "np --yolo"
   },
   "author": "steelydylan",
   "license": "MIT",
