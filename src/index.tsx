@@ -84,7 +84,6 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
   render() {
     const { width, height } = this.state;
     const { header, refreshTime, getUrl, hasCloseBtn } = this.props;
-    console.log(hasCloseBtn);
     return (<DeviceModeContext.Provider value={{
       state: this.state,
       actions: {
