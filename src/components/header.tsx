@@ -21,6 +21,7 @@ const HeaderStyle = styled.header`
   background-color : #e9e9e9;
   padding: 5px 10px;
   position: absolute;
+  box-sizing: border-box;
   top: 0;
   left: 0;
   width: 100%;

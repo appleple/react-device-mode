@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import ReactDeviceMode from '../src/index.tsx';
 
-render(<div>
+render(<div style={{height: '100vh'}}>
   <link rel="stylesheet" href="https://developer.a-blogcms.jp/themes/system/css/acms-admin.css" />
   <ReactDeviceMode src='/test/test.html' i18n={ {fitWindow: '画面サイズにあわせる'} } devices={[
   {

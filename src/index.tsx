@@ -17,7 +17,7 @@ const showAnimation = keyframes`
 `
 
 const ViwerStyle = styled.div`
-  height  100vh;
+  height  100%;
   animation ${showAnimation} .5s ease-out;
 `
 

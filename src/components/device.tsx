@@ -26,7 +26,7 @@ const DeviceContainer = styled.div`
   display: flex;
   justify-content: center;
   background-color: #DDDDDD;
-  height: 100vh;
+  height: 100%;
   padding-top: ${FrameTop + 20}px;
   box-sizing: border-box;
   overflow: auto;
