@@ -23,6 +23,10 @@ const ViwerStyle = styled.div`
 
 export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeState> {
 
+  static defaultProps = {
+    hasCloseBtn: true
+  }
+
   constructor(props: DeviceProps) {
     super(props);
     this.state = Object.assign({}, DeviceMode, {
@@ -52,12 +56,16 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
       }
       return false;
     });
-    this.setState(device);
+    this.setState(device, () => {
+      if (this.props.onDeviceUpdated) {
+        this.props.onDeviceUpdated(Object.assign({}, this.state));
+      }
+    });
   }
 
   onUrlChange(url) {
     if (this.props.onUrlChange) {
-      this.props.onUrlChange(url);
+      this.props.onUrlChange(url, Object.assign({}, this.state));
     }
   }
 
@@ -76,6 +84,7 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
   render() {
     const { width, height } = this.state;
     const { header, refreshTime, getUrl, hasCloseBtn } = this.props;
+    console.log(hasCloseBtn);
     return (<DeviceModeContext.Provider value={{
       state: this.state,
       actions: {
