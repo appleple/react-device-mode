@@ -3,7 +3,7 @@ import Resizable from 're-resizable';
 import styled, { keyframes } from 'styled-components';
 import { DeviceModeContext } from '../context';
 import { onIframeUrlChange} from '../util';
-import { DeviceModeContextType, getUrlFunc } from '../type';
+import { DeviceModeContextType, DeviceComponentProps } from '../type';
 
 const FrameLeft = 18;
 const FrameRight = 18;
@@ -109,7 +109,7 @@ const DeviceScreen = styled.iframe`
   border-radius: 2px;
 `;
 
-export default class Device extends Component<{ refreshTime: Date, getUrl: getUrlFunc, onUrlChange: Function ,}, { refreshTime: Date }> {
+export default class Device extends Component<DeviceComponentProps, { refreshTime: Date }> {
 
   iframe: HTMLElement;
 
@@ -143,9 +143,9 @@ export default class Device extends Component<{ refreshTime: Date, getUrl: getUr
   }
 
   getSize(state) {
-	if (state.resizable) {
-	  return { width: state.width + 2, height: state.height + 2};
-	}
+    if (state.resizable) {
+      return { width: state.width + 2, height: state.height + 2};
+    }
     const width = state.width + FrameLeft + FrameRight + 6;
     const height = state.height + FrameTop + FrameBottom + 6;
     if (state.orientation === 'portrait') {
@@ -160,7 +160,10 @@ export default class Device extends Component<{ refreshTime: Date, getUrl: getUr
       if (this.props.onUrlChange) {
         this.props.onUrlChange(url);
       }
-    })
+    });
+    if (this.props.getIframe) {
+      this.props.getIframe(iframe);
+    }
   }
 
   render() {

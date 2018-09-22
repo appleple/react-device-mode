@@ -93,8 +93,9 @@ const RotateIcon = styled.span`
   height: 16px;
 `
 
-export default class Header extends Component<{ header: ReactNode }, null> {
+export default class Header extends Component<{ header: ReactNode, hasCloseBtn: boolean }, null> {
   render() {
+    const { hasCloseBtn } = this.props;
     return (<HeaderStyle>
       <DeviceModeContext.Consumer>
         {(context: DeviceModeContextType) =>
@@ -127,9 +128,11 @@ export default class Header extends Component<{ header: ReactNode }, null> {
                 </InputGroup>
               }
             </HeaderInner>
-            <DismissBtn onClick={context.actions.onClose}>
-              <DismissBtnLine />
-            </DismissBtn>
+            {hasCloseBtn && 
+              <DismissBtn onClick={context.actions.onClose}>
+                <DismissBtnLine />
+              </DismissBtn>
+            }
           </Fragment>
         }
       </DeviceModeContext.Consumer>

@@ -23,7 +23,9 @@ export interface DeviceProps extends Device {
   header?: ReactNode,
   refreshTime?: Date,
   getUrl?: getUrlFunc,
-  onUrlChange(url: string): any
+  onUrlChange(url: string): any,
+  hasCloseBtn?: boolean,
+  getIframe(iframe): any
 }
 
 export interface DeviceModeState extends Device {
@@ -54,4 +56,11 @@ export interface DeviceType {
   width?: number,
   height?: number,
   resizable?: boolean
+}
+
+export interface DeviceComponentProps {
+  refreshTime: Date, 
+  getUrl: getUrlFunc, 
+  onUrlChange(url): any,
+  getIframe(iframe: HTMLIFrameElement): any
 }

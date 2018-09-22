@@ -28,4 +28,5 @@ render(<div>
   }
 ]} 
 onUrlChange={(url) => console.log(`url is changed to ${url}`)}
+getIframe={(iframe) => console.log(iframe)}
 onClose={() => console.log('closed')}/></div>, document.querySelector('#root'));

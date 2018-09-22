@@ -61,15 +61,21 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
     }
   }
 
+  getIframe(iframe) {
+    if (this.props.getIframe) {
+      this.props.getIframe(iframe);
+    }
+  }
+
   static getDerivedStateFromProps(nextProps, prevState) {
-	if (nextProps.src && prevState.src !== nextProps.src) {
-	  return { src: nextProps.src }
-	}
+    if (nextProps.src && prevState.src !== nextProps.src) {
+      return { src: nextProps.src }
+    }
   }
 
   render() {
     const { width, height } = this.state;
-    const { header, refreshTime, getUrl } = this.props;
+    const { header, refreshTime, getUrl, hasCloseBtn } = this.props;
     return (<DeviceModeContext.Provider value={{
       state: this.state,
       actions: {
@@ -98,8 +104,8 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
       }
     }} >
       <ViwerStyle>
-        <Header header={header} />
-        <Device refreshTime={refreshTime} getUrl={getUrl} onUrlChange={this.onUrlChange.bind(this)} />
+        <Header header={header} hasCloseBtn={hasCloseBtn}/>
+        <Device refreshTime={refreshTime} getUrl={getUrl} onUrlChange={this.onUrlChange.bind(this)} getIframe={(iframe) => { this.getIframe(iframe) }}/>
       </ViwerStyle>
     </DeviceModeContext.Provider>)
   }
