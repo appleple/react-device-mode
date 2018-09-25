@@ -43,17 +43,13 @@ const DeviceContainer = styled.div`
   background-color: #DDDDDD;
   height: 100%;
   padding-top: ${FrameTop + 20}px;
+  padding-right: 10px;
+  padding-left: 10px;
   box-sizing: border-box;
   overflow: auto;
 `;
 
-const DeviceWrapper = styled.div`
-  margin: 0 auto;
-  border: 2px solid #bcbcbc;
-  width: 100%;
-  height: 100%;
-  position: relative;
-  animation ${deviceAnimation} .5s ease-out;
+const DeviceScaler = styled.div`
   transform: scale(${(props) => {
     if (props.scale === -1) {
       return (window.innerHeight - 235) / props.height
@@ -62,6 +58,106 @@ const DeviceWrapper = styled.div`
     }
   }});
   transform-origin: top center;
+  .handle-right {
+    position: relative;
+    background: #bbb;
+    transition: background .3s;
+    right: -10px !important;
+    width: ${(props) => `${1 / props.scale * 1000}px !important`} 
+    &:hover {
+      background: #999;
+    }
+    &:before {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 50%;
+      ${(props) => 
+      `
+        left: ${100 / props.scale * 2}px;
+        width: ${100 / props.scale * 2}px;
+        height: ${100 / props.scale * 15}px;
+        margin-top: -${100 / props.scale * 7.5}px;
+      `
+      }
+      background-color: #fff;
+    }
+    &:after {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 50%;
+      ${(props) => 
+      `
+        left: ${100 / props.scale * 6}px;
+        width: ${100 / props.scale * 2}px;
+        height: ${100 / props.scale * 15}px;
+        margin-top: -${100 / props.scale * 7.5}px;
+      `
+      }
+      background-color: #fff;
+    }
+  }
+  .handle-bottom {
+    background: #999;
+    position: relative;
+    background: #bbb;
+    transition: background .3s;
+    bottom: -10px !important;
+    height: ${(props) => `${1 / props.scale * 1000}px !important`} 
+    &:hover {
+      background: #999;
+    }
+    &:before {
+      content: "";
+      display: block;
+      position: absolute;
+      left: 50%;
+      ${(props) => 
+      `
+        top: ${100 / props.scale * 2}px;
+        height: ${100 / props.scale * 2}px;
+        width: ${100 / props.scale * 15}px;
+        margin-left: -${100 / props.scale * 7.5}px;
+      `
+      }
+      background-color: #fff;
+    }
+    &:after {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 6px;
+      left: 50%;
+      ${(props) => 
+      `
+        top: ${100 / props.scale * 6}px;
+        height: ${100 / props.scale * 2}px;
+        width: ${100 / props.scale * 15}px;
+        margin-left: -${100 / props.scale * 7.5}px;
+      `
+      }
+      background-color: #fff;
+    }
+  }
+  .handle-bottom-right {
+    background: #bbb;
+    transition: background .3s;
+    height: ${(props) => `${1 / props.scale * 1000}px !important`} 
+    width: ${(props) => `${1 / props.scale * 1000}px !important`} 
+    &:hover {
+      background: #999;
+    }
+  }
+`
+
+const DeviceWrapper = styled.div`
+  margin: 0 auto;
+  border: 2px solid #bcbcbc;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  animation ${deviceAnimation} .5s ease-out;
   ${props => (props.resizable || !props.hasFrame ) ? '' : `
   ${props.orientation === 'portrait' || props.resizable === true ? `
     padding-top: ${FrameTop}px;
@@ -176,7 +272,7 @@ export default class Device extends Component<DeviceComponentProps, { refreshTim
     }
 
     if (resizable) {
-      return Object.assign({}, resizeConf, { right: true, bottom: true });
+      return Object.assign({}, resizeConf, { right: true, bottom: true, bottomRight: true });
     }
     return resizeConf;
   }
@@ -212,33 +308,44 @@ export default class Device extends Component<DeviceComponentProps, { refreshTim
     return (<DeviceModeContext.Consumer>
       {(context: DeviceModeContextType) => (
         <DeviceContainer>
-          <Resizable enable={this.getRisizeConf(context.state.resizable)} size={this.getSize(context.state)} onResizeStop={
-            (e, direction, ref, d) => {
-              context.actions.updateSize(context.state.width + d.width, context.state.height + d.height)
-            }
-          }>
-            <DeviceWrapper 
-              resizable={context.state.resizable} 
-              scale={context.state.scale} 
-              height={context.state.height} 
-              orientation={context.state.orientation}
-              hasFrame={context.state.hasFrame}>
-              {isLoading &&
-                <LoadingScreen>
-                  <Spinner />
-                </LoadingScreen>
+          <DeviceScaler scale={context.state.scale}>
+            <Resizable 
+              enable={this.getRisizeConf(context.state.resizable)} 
+              size={this.getSize(context.state)} 
+              onResizeStop={
+                (e, direction, ref, d) => {
+                  context.actions.updateSize(context.state.width + d.width, context.state.height + d.height)
+                }
               }
-              <DeviceScreen 
-                isLoading={isLoading} 
-                src={this.props.getUrl({
-                  url: context.state.src,
-                  refreshTime: refreshTime,
-                  ua: context.state.ua
-                })} innerRef={(iframe: HTMLIframeElement) => {
-                  this.iframe = iframe;
-                }} />
-            </DeviceWrapper>
-          </Resizable>
+              handleClasses={{
+                right: 'handle-right',
+                bottom: 'handle-bottom',
+                bottomRight: 'handle-bottom-right'
+              }}
+            >
+              <DeviceWrapper 
+                resizable={context.state.resizable} 
+                
+                height={context.state.height} 
+                orientation={context.state.orientation}
+                hasFrame={context.state.hasFrame}>
+                {isLoading &&
+                  <LoadingScreen>
+                    <Spinner />
+                  </LoadingScreen>
+                }
+                <DeviceScreen 
+                  isLoading={isLoading} 
+                  src={this.props.getUrl({
+                    url: context.state.src,
+                    refreshTime: refreshTime,
+                    ua: context.state.ua
+                  })} innerRef={(iframe: HTMLIframeElement) => {
+                    this.iframe = iframe;
+                  }} />
+              </DeviceWrapper>
+            </Resizable>
+          </DeviceScaler>
         </DeviceContainer>
       )}
     </DeviceModeContext.Consumer>);

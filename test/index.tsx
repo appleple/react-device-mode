@@ -17,20 +17,20 @@ class TestPreview extends Component {
     <link rel="stylesheet" href="https://developer.a-blogcms.jp/themes/system/css/acms-admin.css" />
     <ReactDeviceMode src={url} i18n={ {fitWindow: '画面サイズにあわせる'} } devices={[
     {
-      name: 'iPhone 6',
-      ua: 'Mozilla/5.0 (iPad; CPU OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1',
-      width: 375,
-      height: 667,
-      resizable: false,
-      hasFrame: true
-    },
-    {
       name: 'PC',
       ua: 'none',
       width: 768,
       height: 768,
       resizable: true,
       hasFrame: false
+    },
+    {
+      name: 'iPhone 6',
+      ua: 'Mozilla/5.0 (iPad; CPU OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1',
+      width: 375,
+      height: 667,
+      resizable: false,
+      hasFrame: true
     },
     {
       name: 'iPhone X',
