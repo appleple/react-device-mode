@@ -19,8 +19,6 @@ export const onIframeUrlChange = (iframe: HTMLIFrameElement, callback: Function)
     iframe.contentWindow.addEventListener("unload", unloadHandler);
   }
 
-  // iframe.addEventListener("load", attachUnload);
-
   iframe.contentWindow.addEventListener("DOMContentLoaded", attachUnload);
-  // attachUnload();
+  attachUnload();
 }
