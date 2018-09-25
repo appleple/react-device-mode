@@ -50,9 +50,8 @@ class TestPreview extends Component {
     }
   ]} 
   onUrlChange={(url) => {
-    this.setState({ url });
+    console.log(url);
   }}
-  getUrl={(obj) => `${obj.url}?test`}
   getIframe={(iframe) => console.log(iframe)}
   onClose={() => console.log('closed')}
   /></div>)
