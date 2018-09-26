@@ -4,7 +4,6 @@ export const onIframeUrlChange = (iframe: HTMLIFrameElement, callback: Function)
     // the `unload` event is dispatched.
     setTimeout(() => {
       try {
-        iframe.contentWindow.addEventListener("DOMContentLoaded", attachUnload);
         callback(iframe.contentDocument.location.href);
       } catch (e) {
         console.log(e);
@@ -19,6 +18,6 @@ export const onIframeUrlChange = (iframe: HTMLIFrameElement, callback: Function)
     iframe.contentWindow.addEventListener("unload", unloadHandler);
   }
 
-  iframe.contentWindow.addEventListener("DOMContentLoaded", attachUnload);
+  iframe.addEventListener("load", attachUnload);
   attachUnload();
 }

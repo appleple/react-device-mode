@@ -65,7 +65,7 @@ const DeviceScaler = styled.div`
     ${(props) => `
     right: -${1 / props.scale * 2000}px !important;
     width: ${1 / props.scale * 2000}px !important
-    `} 
+    `}
     &:hover {
       background: #999;
     }
@@ -75,7 +75,7 @@ const DeviceScaler = styled.div`
       position: absolute;
       top: 50%;
       border-radius: 2px;
-      ${(props) => 
+      ${(props) =>
       `
         left: ${1 / props.scale * 600}px;
         width: ${1 / props.scale * 300}px;
@@ -91,7 +91,7 @@ const DeviceScaler = styled.div`
       position: absolute;
       top: 50%;
       border-radius: 2px;
-      ${(props) => 
+      ${(props) =>
       `
         left: ${1 / props.scale * 1200}px;
         width: ${1 / props.scale * 300}px;
@@ -107,7 +107,7 @@ const DeviceScaler = styled.div`
     position: relative;
     background: #bbb;
     transition: background .3s;
-    ${(props) => 
+    ${(props) =>
     `
     bottom: -${1 / props.scale * 2000}px !important;
     height: ${1 / props.scale * 2000}px !important
@@ -122,7 +122,7 @@ const DeviceScaler = styled.div`
       position: absolute;
       left: 50%;
       border-radius: 2px;
-      ${(props) => 
+      ${(props) =>
       `
         top: ${1 / props.scale * 600}px;
         height: ${1 / props.scale * 300}px;
@@ -139,7 +139,7 @@ const DeviceScaler = styled.div`
       top: 6px;
       left: 50%;
       border-radius: 2px;
-      ${(props) => 
+      ${(props) =>
       `
         top: ${1 / props.scale * 1200}px;
         height: ${1 / props.scale * 300}px;
@@ -158,7 +158,7 @@ const DeviceScaler = styled.div`
       bottom: -${1 / props.scale * 2000}px !important;
       height: ${1 / props.scale * 2000}px !important;
       width: ${1 / props.scale * 2000}px !important;
-    `} 
+    `}
     &:hover {
       background: #999;
     }
@@ -169,7 +169,7 @@ const DeviceScaler = styled.div`
       background-color: #fff;
       transform: rotate(-45deg);
       border-radius: 2px;
-      ${(props) => 
+      ${(props) =>
       `
       top: ${1 / props.scale * 800}px;
       left: 0;
@@ -185,7 +185,7 @@ const DeviceScaler = styled.div`
       background-color: #fff;
       transform: rotate(-45deg);
       border-radius: 2px;
-      ${(props) => 
+      ${(props) =>
       `
       top: ${1 / props.scale * 1300}px;
       left: ${1 / props.scale * 800}px;
@@ -344,7 +344,10 @@ export default class Device extends Component<DeviceComponentProps, { refreshTim
     });
     if (this.props.getIframe) {
       this.props.getIframe(iframe);
-    }
+		}
+		if (this.props.onIframeLoaded) {
+			iframe.addEventListener("load", this.props.onIframeLoaded);
+		}
   }
 
   render() {
@@ -355,9 +358,9 @@ export default class Device extends Component<DeviceComponentProps, { refreshTim
       {(context: DeviceModeContextType) => (
         <DeviceContainer>
           <DeviceScaler scale={context.state.scale}>
-            <Resizable 
-              enable={this.getRisizeConf(context.state.resizable)} 
-              size={this.getSize(context.state)} 
+            <Resizable
+              enable={this.getRisizeConf(context.state.resizable)}
+              size={this.getSize(context.state)}
               onResizeStop={
                 (e, direction, ref, d) => {
                   context.actions.updateSize(context.state.width + d.width, context.state.height + d.height)
@@ -369,10 +372,10 @@ export default class Device extends Component<DeviceComponentProps, { refreshTim
                 bottomRight: 'handle-bottom-right'
               }}
             >
-              <DeviceWrapper 
-                resizable={context.state.resizable} 
-                
-                height={context.state.height} 
+              <DeviceWrapper
+                resizable={context.state.resizable}
+
+                height={context.state.height}
                 orientation={context.state.orientation}
                 hasFrame={context.state.hasFrame}>
                 {isLoading &&
@@ -380,8 +383,8 @@ export default class Device extends Component<DeviceComponentProps, { refreshTim
                     <Spinner />
                   </LoadingScreen>
                 }
-                <DeviceScreen 
-                  isLoading={isLoading} 
+                <DeviceScreen
+                  isLoading={isLoading}
                   src={this.props.getUrl({
                     url: context.state.src,
                     refreshTime: refreshTime,

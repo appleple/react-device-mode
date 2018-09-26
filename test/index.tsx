@@ -48,9 +48,11 @@ class TestPreview extends Component<{}, {url: string}> {
       resizable: false,
       hasFrame: true
     }
-  ]} 
+  ]}
   onUrlChange={(url) => {
-    console.log(url);
+    this.setState({
+			url
+		})
   }}
   getIframe={(iframe) => console.log(iframe)}
   onClose={() => console.log('closed')}

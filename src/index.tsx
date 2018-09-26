@@ -76,7 +76,13 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
     if (this.props.onUrlChange) {
       this.props.onUrlChange(url, Object.assign({}, this.state));
     }
-  }
+	}
+
+	onIframeLoaded() {
+		if (this.props.onIframeLoaded) {
+			this.props.onIframeLoaded();
+		}
+	}
 
   getIframe(iframe) {
     if (this.props.getIframe) {
@@ -122,11 +128,12 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
     }} >
       <ViwerStyle>
         <Header header={header} sub={sub} hasCloseBtn={hasCloseBtn}/>
-        <Device 
-          refreshTime={refreshTime} 
+        <Device
+          refreshTime={refreshTime}
           getUrl={getUrl}
           isLoading={isLoading}
-          onUrlChange={this.onUrlChange.bind(this)} 
+					onUrlChange={this.onUrlChange.bind(this)}
+					onIframeLoaded={this.onIframeLoaded.bind(this)}
           getIframe={(iframe) => { this.getIframe(iframe) }}
         />
       </ViwerStyle>
