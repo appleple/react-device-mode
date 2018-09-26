@@ -45,9 +45,9 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
     }
     window.addEventListener('resize', () => {
       const { width, resizable } = this.state;
-      if (resizable && width > window.innerWidth - 25) {
+      if (resizable && width > window.innerWidth - 45) {
         this.setState({
-          width: window.innerWidth - 25
+          width: window.innerWidth - 45
         });
       }
     });

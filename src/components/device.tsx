@@ -62,8 +62,10 @@ const DeviceScaler = styled.div`
     position: relative;
     background: #bbb;
     transition: background .3s;
-    right: -10px !important;
-    width: ${(props) => `${1 / props.scale * 1000}px !important`} 
+    ${(props) => `
+    right: -${1 / props.scale * 2000}px !important;
+    width: ${1 / props.scale * 2000}px !important
+    `} 
     &:hover {
       background: #999;
     }
@@ -72,12 +74,13 @@ const DeviceScaler = styled.div`
       display: block;
       position: absolute;
       top: 50%;
+      border-radius: 2px;
       ${(props) => 
       `
-        left: ${100 / props.scale * 2}px;
-        width: ${100 / props.scale * 2}px;
-        height: ${100 / props.scale * 15}px;
-        margin-top: -${100 / props.scale * 7.5}px;
+        left: ${1 / props.scale * 600}px;
+        width: ${1 / props.scale * 300}px;
+        height: ${1 / props.scale * 3000}px;
+        margin-top: -${1 / props.scale * 1500}px;
       `
       }
       background-color: #fff;
@@ -87,12 +90,13 @@ const DeviceScaler = styled.div`
       display: block;
       position: absolute;
       top: 50%;
+      border-radius: 2px;
       ${(props) => 
       `
-        left: ${100 / props.scale * 6}px;
-        width: ${100 / props.scale * 2}px;
-        height: ${100 / props.scale * 15}px;
-        margin-top: -${100 / props.scale * 7.5}px;
+        left: ${1 / props.scale * 1200}px;
+        width: ${1 / props.scale * 300}px;
+        height: ${1 / props.scale * 3000}px;
+        margin-top: -${1 / props.scale * 1500}px;
       `
       }
       background-color: #fff;
@@ -103,8 +107,12 @@ const DeviceScaler = styled.div`
     position: relative;
     background: #bbb;
     transition: background .3s;
-    bottom: -10px !important;
-    height: ${(props) => `${1 / props.scale * 1000}px !important`} 
+    ${(props) => 
+    `
+    bottom: -${1 / props.scale * 2000}px !important;
+    height: ${1 / props.scale * 2000}px !important
+    `
+    }
     &:hover {
       background: #999;
     }
@@ -113,12 +121,13 @@ const DeviceScaler = styled.div`
       display: block;
       position: absolute;
       left: 50%;
+      border-radius: 2px;
       ${(props) => 
       `
-        top: ${100 / props.scale * 2}px;
-        height: ${100 / props.scale * 2}px;
-        width: ${100 / props.scale * 15}px;
-        margin-left: -${100 / props.scale * 7.5}px;
+        top: ${1 / props.scale * 600}px;
+        height: ${1 / props.scale * 300}px;
+        width: ${1 / props.scale * 3000}px;
+        margin-left: -${1 / props.scale * 1500}px;
       `
       }
       background-color: #fff;
@@ -129,12 +138,13 @@ const DeviceScaler = styled.div`
       position: absolute;
       top: 6px;
       left: 50%;
+      border-radius: 2px;
       ${(props) => 
       `
-        top: ${100 / props.scale * 6}px;
-        height: ${100 / props.scale * 2}px;
-        width: ${100 / props.scale * 15}px;
-        margin-left: -${100 / props.scale * 7.5}px;
+        top: ${1 / props.scale * 1200}px;
+        height: ${1 / props.scale * 300}px;
+        width: ${1 / props.scale * 3000}px;
+        margin-left: -${1 / props.scale * 1500}px;
       `
       }
       background-color: #fff;
@@ -143,10 +153,46 @@ const DeviceScaler = styled.div`
   .handle-bottom-right {
     background: #bbb;
     transition: background .3s;
-    height: ${(props) => `${1 / props.scale * 1000}px !important`} 
-    width: ${(props) => `${1 / props.scale * 1000}px !important`} 
+    ${(props) => `
+      right: -${1 / props.scale * 2000}px !important;
+      bottom: -${1 / props.scale * 2000}px !important;
+      height: ${1 / props.scale * 2000}px !important;
+      width: ${1 / props.scale * 2000}px !important;
+    `} 
     &:hover {
       background: #999;
+    }
+    &:before {
+      content: "";
+      display: block;
+      position: absolute;
+      background-color: #fff;
+      transform: rotate(-45deg);
+      border-radius: 2px;
+      ${(props) => 
+      `
+      top: ${1 / props.scale * 800}px;
+      left: 0;
+      height: ${1 / props.scale * 300}px;
+      width: ${1 / props.scale * 2000}px;
+      `
+      }
+    }
+    &:after {
+      content: "";
+      display: block;
+      position: absolute;
+      background-color: #fff;
+      transform: rotate(-45deg);
+      border-radius: 2px;
+      ${(props) => 
+      `
+      top: ${1 / props.scale * 1300}px;
+      left: ${1 / props.scale * 800}px;
+      height: ${1 / props.scale * 300}px;
+      width: ${1 / props.scale * 1200}px;
+      `
+      }
     }
   }
 `
