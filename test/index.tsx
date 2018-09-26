@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import ReactDeviceMode from '../src/index.tsx';
 
-class TestPreview extends Component {
+class TestPreview extends Component<{}, {url: string}> {
 
   constructor(props) {
     super(props);
