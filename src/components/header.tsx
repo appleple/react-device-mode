@@ -94,15 +94,15 @@ const RotateIcon = styled.span`
   height: 16px;
 `
 
-export default class Header extends Component<{ header: ReactNode, hasCloseBtn: boolean }, null> {
+export default class Header extends Component<{ header: ReactNode, sub: ReactNode, hasCloseBtn: boolean }, null> {
   render() {
-    const { hasCloseBtn } = this.props;
+    const { hasCloseBtn, header, sub } = this.props;
     return (<HeaderStyle>
       <DeviceModeContext.Consumer>
         {(context: DeviceModeContextType) =>
           <Fragment>
             <HeaderInner className="acms-admin-form">
-              {this.props.header}
+              {header}
               <select onChange={(e) => { context.actions.updateDevice(e.target.value) }}>
                 {context.state.devices.map(device => <option value={device.name}>{device.name}</option>)}
               </select>
@@ -128,6 +128,7 @@ export default class Header extends Component<{ header: ReactNode, hasCloseBtn: 
                   <BtnStyle onClick={context.actions.switchOrientation} className="acms-admin-btn" style={{ padding: '5px 10px' }}><RotateIcon /></BtnStyle>
                 </InputGroup>
               }
+              {sub}
             </HeaderInner>
             {hasCloseBtn && 
               <DismissBtn onClick={context.actions.onClose}>

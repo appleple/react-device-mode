@@ -54,6 +54,8 @@ class TestPreview extends Component {
   }}
   getIframe={(iframe) => console.log(iframe)}
   onClose={() => console.log('closed')}
+  header={<button>header</button>}
+  sub={<button>test</button>}
   /></div>)
   }
 }

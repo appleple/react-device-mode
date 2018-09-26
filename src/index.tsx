@@ -43,6 +43,14 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
       const deviceName = devices[0].name;
       this.updateDevice(deviceName);
     }
+    window.addEventListener('resize', () => {
+      const { width, resizable } = this.state;
+      if (resizable && width > window.innerWidth - 25) {
+        this.setState({
+          width: window.innerWidth - 25
+        });
+      }
+    });
   }
 
   componentDidCatch(error, info) {
@@ -84,7 +92,7 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
 
   render() {
     const { width, height } = this.state;
-    const { header, refreshTime, getUrl, hasCloseBtn, isLoading } = this.props;
+    const { header, sub, refreshTime, getUrl, hasCloseBtn, isLoading } = this.props;
     return (<DeviceModeContext.Provider value={{
       state: this.state,
       actions: {
@@ -113,7 +121,7 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
       }
     }} >
       <ViwerStyle>
-        <Header header={header} hasCloseBtn={hasCloseBtn}/>
+        <Header header={header} sub={sub} hasCloseBtn={hasCloseBtn}/>
         <Device 
           refreshTime={refreshTime} 
           getUrl={getUrl}

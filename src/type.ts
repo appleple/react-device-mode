@@ -20,6 +20,7 @@ interface getUrlFunc {
 
 export interface DeviceProps extends Device {
   header?: ReactNode,
+  sub?: ReactNode,
   refreshTime?: Date,
   getUrl?: getUrlFunc,
   hasCloseBtn?: boolean,
