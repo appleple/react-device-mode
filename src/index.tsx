@@ -17,7 +17,8 @@ const showAnimation = keyframes`
 `
 
 const ViwerStyle = styled.div`
-  height  100%;
+	height: 100%;
+	width: 100%;
   animation ${showAnimation} .5s ease-out;
 `
 
@@ -26,7 +27,9 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
   static defaultProps = {
     hasCloseBtn: true,
     isLoading: false
-  }
+	}
+
+	ele: HTMLElement
 
   constructor(props: DeviceProps) {
     super(props);
@@ -44,18 +47,23 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
       this.updateDevice(deviceName);
     }
     window.addEventListener('resize', () => {
-      const { width, resizable } = this.state;
-      if (resizable && width > window.innerWidth - 45) {
-        this.setState({
-          width: window.innerWidth - 45
-        });
-      }
-    });
+			this.adJustWindowSize();
+		});
+		this.adJustWindowSize();
   }
 
   componentDidCatch(error, info) {
     console.log(error, info);
-  }
+	}
+
+	adJustWindowSize() {
+		const { width, resizable } = this.state;
+		if (resizable && width > this.ele.offsetWidth - 45) {
+			this.setState({
+				width: this.ele.offsetWidth - 45
+			});
+		}
+	}
 
   updateDevice(deviceName: string) {
     const { devices } = this.state;
@@ -66,6 +74,7 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
       return false;
     });
     this.setState(device, () => {
+			this.adJustWindowSize();
       if (this.props.onDeviceUpdated) {
         this.props.onDeviceUpdated(Object.assign({}, this.state));
       }
@@ -126,7 +135,9 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
         }
       }
     }} >
-      <ViwerStyle>
+      <ViwerStyle innerRef={(ele) => {
+				this.ele = ele;
+			}}>
         <Header header={header} sub={sub} hasCloseBtn={hasCloseBtn}/>
         <Device
           refreshTime={refreshTime}

@@ -19,7 +19,7 @@ class TestPreview extends Component<{}, {url: string}> {
     {
       name: 'PC',
       ua: 'none',
-      width: 768,
+      width: 1366,
       height: 768,
       resizable: true,
       hasFrame: false
