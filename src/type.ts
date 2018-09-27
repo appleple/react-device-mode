@@ -24,7 +24,8 @@ export interface DeviceProps extends Device {
   refreshTime?: Date,
   getUrl?: getUrlFunc,
   hasCloseBtn?: boolean,
-  isLoading?: boolean,
+	isLoading?: boolean,
+	isNaked?: boolean,
   onClose?(): void,
 	onUrlChange?(url: string, device?: DeviceModeState): any,
 	onIframeLoaded?(): any,
@@ -70,5 +71,6 @@ export interface DeviceComponentProps {
 	onUrlChange(url: string): any,
 	onIframeLoaded(): any,
   getIframe(iframe: HTMLIFrameElement): any,
-  isLoading: boolean
+	isLoading: boolean,
+	isNaked: boolean
 }

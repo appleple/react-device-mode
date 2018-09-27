@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import Resizable from 're-resizable';
 import styled, { keyframes } from 'styled-components';
 import { DeviceModeContext } from '../context';
-import { onIframeUrlChange} from '../util';
+import { onIframeUrlChange } from '../util';
 import { DeviceModeContextType, DeviceComponentProps } from '../type';
 
 const FrameLeft = 18;
@@ -38,34 +38,36 @@ const spinnerAnimation = keyframes`
 `
 
 const DeviceContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  background-color: #DDDDDD;
-  height: 100%;
-  padding-top: ${FrameTop + 20}px;
-  padding-right: 10px;
-  padding-left: 10px;
-  box-sizing: border-box;
-  overflow: auto;
+  ${props => !props.isNaked &&  `
+    display: flex;
+    justify-content: center;
+    background-color: #DDDDDD;
+    height: 100%;
+    padding-top: ${FrameTop + 20}px;
+    padding-right: 10px;
+    padding-left: 10px;
+    box-sizing: border-box;
+    overflow: auto;
+    `
+  }
 `;
 
 const DeviceScaler = styled.div`
-  transform: scale(${(props) => {
+  ${props => !props.isNaked && `
+  transform: scale(${(() => {
     if (props.scale === -1) {
       return (window.innerHeight - 235) / props.height
     } else {
       return props.scale / 100
     }
-  }});
+  })()});
   transform-origin: top center;
   .handle-right {
     position: relative;
     background: #bbb;
     transition: background .3s;
-    ${(props) => `
     right: -${1 / props.scale * 2000}px !important;
     width: ${1 / props.scale * 2000}px !important
-    `}
     &:hover {
       background: #999;
     }
@@ -75,14 +77,10 @@ const DeviceScaler = styled.div`
       position: absolute;
       top: 50%;
       border-radius: 2px;
-      ${(props) =>
-      `
-        left: ${1 / props.scale * 600}px;
-        width: ${1 / props.scale * 300}px;
-        height: ${1 / props.scale * 3000}px;
-        margin-top: -${1 / props.scale * 1500}px;
-      `
-      }
+			left: ${1 / props.scale * 600}px;
+			width: ${1 / props.scale * 300}px;
+			height: ${1 / props.scale * 3000}px;
+			margin-top: -${1 / props.scale * 1500}px;
       background-color: #fff;
     }
     &:after {
@@ -91,14 +89,10 @@ const DeviceScaler = styled.div`
       position: absolute;
       top: 50%;
       border-radius: 2px;
-      ${(props) =>
-      `
-        left: ${1 / props.scale * 1200}px;
-        width: ${1 / props.scale * 300}px;
-        height: ${1 / props.scale * 3000}px;
-        margin-top: -${1 / props.scale * 1500}px;
-      `
-      }
+			left: ${1 / props.scale * 1200}px;
+			width: ${1 / props.scale * 300}px;
+			height: ${1 / props.scale * 3000}px;
+			margin-top: -${1 / props.scale * 1500}px;
       background-color: #fff;
     }
   }
@@ -107,12 +101,8 @@ const DeviceScaler = styled.div`
     position: relative;
     background: #bbb;
     transition: background .3s;
-    ${(props) =>
-    `
     bottom: -${1 / props.scale * 2000}px !important;
     height: ${1 / props.scale * 2000}px !important
-    `
-    }
     &:hover {
       background: #999;
     }
@@ -122,14 +112,10 @@ const DeviceScaler = styled.div`
       position: absolute;
       left: 50%;
       border-radius: 2px;
-      ${(props) =>
-      `
-        top: ${1 / props.scale * 600}px;
-        height: ${1 / props.scale * 300}px;
-        width: ${1 / props.scale * 3000}px;
-        margin-left: -${1 / props.scale * 1500}px;
-      `
-      }
+      top: ${1 / props.scale * 600}px;
+			height: ${1 / props.scale * 300}px;
+			width: ${1 / props.scale * 3000}px;
+			margin-left: -${1 / props.scale * 1500}px;
       background-color: #fff;
     }
     &:after {
@@ -139,26 +125,21 @@ const DeviceScaler = styled.div`
       top: 6px;
       left: 50%;
       border-radius: 2px;
-      ${(props) =>
-      `
-        top: ${1 / props.scale * 1200}px;
-        height: ${1 / props.scale * 300}px;
-        width: ${1 / props.scale * 3000}px;
-        margin-left: -${1 / props.scale * 1500}px;
-      `
-      }
+			top: ${1 / props.scale * 1200}px;
+			height: ${1 / props.scale * 300}px;
+			width: ${1 / props.scale * 3000}px;
+			margin-left: -${1 / props.scale * 1500}px;
       background-color: #fff;
     }
   }
   .handle-bottom-right {
     background: #bbb;
     transition: background .3s;
-    ${(props) => `
-      right: -${1 / props.scale * 2000}px !important;
-      bottom: -${1 / props.scale * 2000}px !important;
-      height: ${1 / props.scale * 2000}px !important;
-      width: ${1 / props.scale * 2000}px !important;
-    `}
+   	right: -${1 / props.scale * 2000}px !important;
+		bottom: -${1 / props.scale * 2000}px !important;
+		height: ${1 / props.scale * 2000}px !important;
+		width: ${1 / props.scale * 2000}px !important;
+
     &:hover {
       background: #999;
     }
@@ -169,14 +150,10 @@ const DeviceScaler = styled.div`
       background-color: #fff;
       transform: rotate(-45deg);
       border-radius: 2px;
-      ${(props) =>
-      `
       top: ${1 / props.scale * 800}px;
       left: 0;
       height: ${1 / props.scale * 300}px;
       width: ${1 / props.scale * 2000}px;
-      `
-      }
     }
     &:after {
       content: "";
@@ -185,26 +162,24 @@ const DeviceScaler = styled.div`
       background-color: #fff;
       transform: rotate(-45deg);
       border-radius: 2px;
-      ${(props) =>
-      `
       top: ${1 / props.scale * 1300}px;
       left: ${1 / props.scale * 800}px;
       height: ${1 / props.scale * 300}px;
       width: ${1 / props.scale * 1200}px;
-      `
-      }
     }
-  }
-`
+	}
+	`
+}}`
 
 const DeviceWrapper = styled.div`
   margin: 0 auto;
-  border: 2px solid #bcbcbc;
   width: 100%;
   height: 100%;
   position: relative;
+  ${props => !props.isNaked &&  `
+  border: 2px solid #bcbcbc;
   animation ${deviceAnimation} .5s ease-out;
-  ${props => (props.resizable || !props.hasFrame ) ? '' : `
+  ${(props.resizable || !props.hasFrame) ? '' : `
   ${props.orientation === 'portrait' || props.resizable === true ? `
     padding-top: ${FrameTop}px;
     padding-left: ${FrameLeft}px;
@@ -256,15 +231,18 @@ const DeviceWrapper = styled.div`
     box-sizing: border-box;
   }
   `}
+  `}
 `;
 
 const DeviceScreen = styled.iframe`
   width: 100%;
   height: 100%;
   box-sizing: border-box;
+  ${props => !props.isNaked && `
   border: 1px solid #CCC;
   border-radius: 2px;
-  ${props => !props.isLoading ?'display: block;' : 'display: none;'}
+  `}
+  ${props => !props.isLoading ? 'display: block;' : 'display: none;'}
 `;
 
 const LoadingScreen = styled.div`
@@ -317,7 +295,7 @@ export default class Device extends Component<DeviceComponentProps, { refreshTim
       topLeft: false
     }
 
-    if (resizable) {
+    if (resizable && !this.props.isNaked) {
       return Object.assign({}, resizeConf, { right: true, bottom: true, bottomRight: true });
     }
     return resizeConf;
@@ -325,7 +303,11 @@ export default class Device extends Component<DeviceComponentProps, { refreshTim
 
   getSize(state) {
     if (!state.hasFrame) {
-      return { width: state.width + 2, height: state.height + 2};
+			if (state.orientation === 'portrait') {
+				return { width: state.width + 2, height: state.height + 2 };
+			} else {
+				return { width: state.height + 2, height: state.width + 2 };
+			}
     }
     const width = state.width + FrameLeft + FrameRight + 6;
     const height = state.height + FrameTop + FrameBottom + 6;
@@ -344,20 +326,20 @@ export default class Device extends Component<DeviceComponentProps, { refreshTim
     });
     if (this.props.getIframe) {
       this.props.getIframe(iframe);
-		}
-		if (this.props.onIframeLoaded) {
-			iframe.addEventListener("load", this.props.onIframeLoaded);
-		}
+    }
+    if (this.props.onIframeLoaded) {
+      iframe.addEventListener("load", this.props.onIframeLoaded);
+    }
   }
 
   render() {
 
-    const { refreshTime, isLoading } = this.props;
+    const { refreshTime, isLoading, isNaked } = this.props;
 
     return (<DeviceModeContext.Consumer>
       {(context: DeviceModeContextType) => (
-        <DeviceContainer>
-          <DeviceScaler scale={context.state.scale}>
+        <DeviceContainer isNaked={isNaked}>
+          <DeviceScaler scale={context.state.scale} isNaked={isNaked} >
             <Resizable
               enable={this.getRisizeConf(context.state.resizable)}
               size={this.getSize(context.state)}
@@ -374,16 +356,17 @@ export default class Device extends Component<DeviceComponentProps, { refreshTim
             >
               <DeviceWrapper
                 resizable={context.state.resizable}
-
                 height={context.state.height}
                 orientation={context.state.orientation}
-                hasFrame={context.state.hasFrame}>
+                hasFrame={context.state.hasFrame}
+                isNaked={isNaked}>
                 {isLoading &&
-                  <LoadingScreen>
+                  <LoadingScreen isNaked={isNaked}>
                     <Spinner />
                   </LoadingScreen>
                 }
                 <DeviceScreen
+								  isNaked={isNaked}
                   isLoading={isLoading}
                   src={this.props.getUrl({
                     url: context.state.src,

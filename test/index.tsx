@@ -15,7 +15,11 @@ class TestPreview extends Component<{}, {url: string}> {
     const { url } = this.state;
     return (<div style={{height: '100vh'}}>
     <link rel="stylesheet" href="https://developer.a-blogcms.jp/themes/system/css/acms-admin.css" />
-    <ReactDeviceMode src={url} i18n={ {fitWindow: '画面サイズにあわせる'} } devices={[
+		<ReactDeviceMode
+			isNaked={false}
+			src={url}
+			i18n={ {fitWindow: '画面サイズにあわせる'} }
+			devices={[
     {
       name: 'PC',
       ua: 'none',

@@ -58,7 +58,11 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
 
 	adJustWindowSize() {
 		const { width, resizable } = this.state;
-		if (resizable && width > this.ele.offsetWidth - 45) {
+		if (this.props.isNaked) {
+			this.setState({
+				width: this.ele.offsetWidth
+			});
+		} else if (resizable && width > this.ele.offsetWidth - 45) {
 			this.setState({
 				width: this.ele.offsetWidth - 45
 			});
@@ -107,7 +111,7 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
 
   render() {
     const { width, height } = this.state;
-    const { header, sub, refreshTime, getUrl, hasCloseBtn, isLoading } = this.props;
+    const { header, sub, refreshTime, getUrl, hasCloseBtn, isLoading, isNaked } = this.props;
     return (<DeviceModeContext.Provider value={{
       state: this.state,
       actions: {
@@ -138,8 +142,10 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
       <ViwerStyle innerRef={(ele) => {
 				this.ele = ele;
 			}}>
-        <Header header={header} sub={sub} hasCloseBtn={hasCloseBtn}/>
+				{!isNaked &&
+        <Header header={header} sub={sub} hasCloseBtn={hasCloseBtn}/>}
         <Device
+					isNaked={isNaked}
           refreshTime={refreshTime}
           getUrl={getUrl}
           isLoading={isLoading}
