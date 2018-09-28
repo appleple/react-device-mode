@@ -38,11 +38,12 @@ const spinnerAnimation = keyframes`
 `
 
 const DeviceContainer = styled.div`
+  width: 100%;
+  height: 100%;
   ${props => !props.isNaked && `
     display: flex;
     justify-content: center;
     background-color: #DDDDDD;
-    height: 100%;
     padding-top: ${FrameTop + 20}px;
     padding-right: 10px;
     padding-left: 10px;
@@ -53,6 +54,11 @@ const DeviceContainer = styled.div`
 `;
 
 const DeviceScaler = styled.div`
+  height: 100%;
+  margin: 0 auto;
+  ${props => props.isNaked && `
+    width: 100%;
+  `}
   ${props => !props.isNaked && `
   transform: scale(${(() => {
       if (props.scale === -1) {
@@ -302,6 +308,9 @@ export default class Device extends Component<DeviceComponentProps, { refreshTim
   }
 
   getSize(state) {
+    if (this.props.isNaked) {
+      return { width: '100%', height: '100%' };
+    }
     if (!state.hasFrame) {
       if (state.orientation === 'portrait') {
         return { width: state.width + 2, height: state.height + 2 };
