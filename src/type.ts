@@ -24,11 +24,11 @@ export interface DeviceProps extends Device {
   refreshTime?: Date,
   getUrl?: getUrlFunc,
   hasCloseBtn?: boolean,
-	isLoading?: boolean,
-	isNaked?: boolean,
+  isLoading?: boolean,
+  isNaked?: boolean,
   onClose?(): void,
-	onUrlChange?(url: string, device?: DeviceModeState): any,
-	onIframeLoaded?(): any,
+  onUrlChange?(url: string, device?: DeviceModeState): any,
+  onIframeLoaded?(): any,
   onDeviceUpdated?(device: DeviceModeState): any
   getIframe?(iframe): any,
 }
@@ -68,9 +68,9 @@ export interface DeviceType {
 export interface DeviceComponentProps {
   refreshTime: Date,
   getUrl: getUrlFunc,
-	onUrlChange(url: string): any,
-	onIframeLoaded(): any,
+  onUrlChange(url: string): any,
+  onIframeLoaded(): any,
   getIframe(iframe: HTMLIFrameElement): any,
-	isLoading: boolean,
-	isNaked: boolean
+  isLoading: boolean,
+  isNaked: boolean
 }

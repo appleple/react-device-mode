@@ -130,7 +130,7 @@ export default class Header extends Component<{ header: ReactNode, sub: ReactNod
               }
               {sub}
             </HeaderInner>
-            {hasCloseBtn && 
+            {hasCloseBtn &&
               <DismissBtn onClick={context.actions.onClose}>
                 <DismissBtnLine />
               </DismissBtn>

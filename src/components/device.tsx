@@ -38,7 +38,7 @@ const spinnerAnimation = keyframes`
 `
 
 const DeviceContainer = styled.div`
-  ${props => !props.isNaked &&  `
+  ${props => !props.isNaked && `
     display: flex;
     justify-content: center;
     background-color: #DDDDDD;
@@ -55,12 +55,12 @@ const DeviceContainer = styled.div`
 const DeviceScaler = styled.div`
   ${props => !props.isNaked && `
   transform: scale(${(() => {
-    if (props.scale === -1) {
-      return (window.innerHeight - 235) / props.height
-    } else {
-      return props.scale / 100
-    }
-  })()});
+      if (props.scale === -1) {
+        return (window.innerHeight - 235) / props.height
+      } else {
+        return props.scale / 100
+      }
+    })()});
   transform-origin: top center;
   .handle-right {
     position: relative;
@@ -169,14 +169,14 @@ const DeviceScaler = styled.div`
     }
 	}
 	`
-}}`
+  }}`
 
 const DeviceWrapper = styled.div`
   margin: 0 auto;
   width: 100%;
   height: 100%;
   position: relative;
-  ${props => !props.isNaked &&  `
+  ${props => !props.isNaked && `
   border: 2px solid #bcbcbc;
   animation ${deviceAnimation} .5s ease-out;
   ${(props.resizable || !props.hasFrame) ? '' : `
@@ -191,7 +191,7 @@ const DeviceWrapper = styled.div`
     padding-right: ${FrameBottom}px;
     padding-bottom: ${FrameLeft}px;
   `
-    }
+      }
   border-radius: 35px;
   clear: both;
   background: #333;
@@ -303,11 +303,11 @@ export default class Device extends Component<DeviceComponentProps, { refreshTim
 
   getSize(state) {
     if (!state.hasFrame) {
-			if (state.orientation === 'portrait') {
-				return { width: state.width + 2, height: state.height + 2 };
-			} else {
-				return { width: state.height + 2, height: state.width + 2 };
-			}
+      if (state.orientation === 'portrait') {
+        return { width: state.width + 2, height: state.height + 2 };
+      } else {
+        return { width: state.height + 2, height: state.width + 2 };
+      }
     }
     const width = state.width + FrameLeft + FrameRight + 6;
     const height = state.height + FrameTop + FrameBottom + 6;
@@ -366,7 +366,7 @@ export default class Device extends Component<DeviceComponentProps, { refreshTim
                   </LoadingScreen>
                 }
                 <DeviceScreen
-								  isNaked={isNaked}
+                  isNaked={isNaked}
                   isLoading={isLoading}
                   src={this.props.getUrl({
                     url: context.state.src,

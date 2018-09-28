@@ -27,9 +27,9 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
   static defaultProps = {
     hasCloseBtn: true,
     isLoading: false
-	}
+  }
 
-	ele: HTMLElement
+  ele: HTMLElement
 
   constructor(props: DeviceProps) {
     super(props);
@@ -47,27 +47,27 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
       this.updateDevice(deviceName);
     }
     window.addEventListener('resize', () => {
-			this.adJustWindowSize();
-		});
-		this.adJustWindowSize();
+      this.adJustWindowSize();
+    });
+    this.adJustWindowSize();
   }
 
   componentDidCatch(error, info) {
     console.log(error, info);
-	}
+  }
 
-	adJustWindowSize() {
-		const { width, resizable } = this.state;
-		if (this.props.isNaked) {
-			this.setState({
-				width: this.ele.offsetWidth
-			});
-		} else if (resizable && width > this.ele.offsetWidth - 45) {
-			this.setState({
-				width: this.ele.offsetWidth - 45
-			});
-		}
-	}
+  adJustWindowSize() {
+    const { width, resizable } = this.state;
+    if (this.props.isNaked) {
+      this.setState({
+        width: this.ele.offsetWidth
+      });
+    } else if (resizable && width > this.ele.offsetWidth - 45) {
+      this.setState({
+        width: this.ele.offsetWidth - 45
+      });
+    }
+  }
 
   updateDevice(deviceName: string) {
     const { devices } = this.state;
@@ -78,7 +78,7 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
       return false;
     });
     this.setState(device, () => {
-			this.adJustWindowSize();
+      this.adJustWindowSize();
       if (this.props.onDeviceUpdated) {
         this.props.onDeviceUpdated(Object.assign({}, this.state));
       }
@@ -89,13 +89,13 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
     if (this.props.onUrlChange) {
       this.props.onUrlChange(url, Object.assign({}, this.state));
     }
-	}
+  }
 
-	onIframeLoaded() {
-		if (this.props.onIframeLoaded) {
-			this.props.onIframeLoaded();
-		}
-	}
+  onIframeLoaded() {
+    if (this.props.onIframeLoaded) {
+      this.props.onIframeLoaded();
+    }
+  }
 
   getIframe(iframe) {
     if (this.props.getIframe) {
@@ -106,8 +106,8 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.src && prevState.src !== nextProps.src) {
       return { src: nextProps.src }
-		}
-		return null;
+    }
+    return null;
   }
 
   render() {
@@ -141,17 +141,17 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
       }
     }} >
       <ViwerStyle innerRef={(ele) => {
-				this.ele = ele;
-			}}>
-				{!isNaked &&
-        <Header header={header} sub={sub} hasCloseBtn={hasCloseBtn}/>}
+        this.ele = ele;
+      }}>
+        {!isNaked &&
+          <Header header={header} sub={sub} hasCloseBtn={hasCloseBtn} />}
         <Device
-					isNaked={isNaked}
+          isNaked={isNaked}
           refreshTime={refreshTime}
           getUrl={getUrl}
           isLoading={isLoading}
-					onUrlChange={this.onUrlChange.bind(this)}
-					onIframeLoaded={this.onIframeLoaded.bind(this)}
+          onUrlChange={this.onUrlChange.bind(this)}
+          onIframeLoaded={this.onIframeLoaded.bind(this)}
           getIframe={(iframe) => { this.getIframe(iframe) }}
         />
       </ViwerStyle>
