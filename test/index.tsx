@@ -8,13 +8,13 @@ class TestPreview extends Component<{}, { url: string, isNaked: boolean }> {
     super(props);
     this.state = {
       url: '/test/test.html',
-      isNaked: false
+      isNaked: true
     }
   }
 
   render() {
     const { url, isNaked } = this.state;
-    return (<div style={{ height: '100vh' }}>
+    return (<div style={{ height: '500px' }}>
       <link rel="stylesheet" href="https://developer.a-blogcms.jp/themes/system/css/acms-admin.css" />
       <ReactDeviceMode
         isNaked={isNaked}

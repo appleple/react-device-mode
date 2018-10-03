@@ -182,6 +182,10 @@ const DeviceWrapper = styled.div`
   width: 100%;
   height: 100%;
   position: relative;
+  ${props => props.isNaked && `
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  `}
   ${props => !props.isNaked && `
   border: 2px solid #bcbcbc;
   animation ${deviceAnimation} .5s ease-out;
@@ -247,6 +251,9 @@ const DeviceScreen = styled.iframe`
   ${props => !props.isNaked && `
   border: 1px solid #CCC;
   border-radius: 2px;
+  `}
+  ${props => props.isNaked && `
+  border: none;
   `}
   ${props => !props.isLoading ? 'display: block;' : 'display: none;'}
 `;
@@ -329,6 +336,7 @@ export default class Device extends Component<DeviceComponentProps, { refreshTim
   componentDidMount() {
     const { iframe } = this;
     onIframeUrlChange(iframe, (url) => {
+      iframe.contentDocument.body.style.width = '100vw';
       if (this.props.onUrlChange) {
         this.props.onUrlChange(url);
       }
