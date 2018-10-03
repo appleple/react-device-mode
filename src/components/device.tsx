@@ -336,17 +336,23 @@ export default class Device extends Component<DeviceComponentProps, { refreshTim
   componentDidMount() {
     const { iframe } = this;
     onIframeUrlChange(iframe, (url) => {
-      iframe.contentDocument.body.style.width = '100vw';
       if (this.props.onUrlChange) {
         this.props.onUrlChange(url);
       }
     });
+
     if (this.props.getIframe) {
       this.props.getIframe(iframe);
     }
-    if (this.props.onIframeLoaded) {
-      iframe.addEventListener("load", this.props.onIframeLoaded);
-    }
+
+    iframe.addEventListener("load", () => {
+      if (iframe && iframe.contentDocument && iframe.contentDocument.body) {
+        iframe.contentDocument.body.style.width = '100vw';
+      }
+      if (this.props.onIframeLoaded) {
+        this.props.onIframeLoaded();
+      }
+    });
   }
 
   render() {
