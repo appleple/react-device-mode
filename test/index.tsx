@@ -8,7 +8,7 @@ class TestPreview extends Component<{}, { url: string, isNaked: boolean }> {
     super(props);
     this.state = {
       url: '/test/test.html',
-      isNaked: true
+      isNaked: false
     }
   }
 

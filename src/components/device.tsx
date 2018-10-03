@@ -55,7 +55,6 @@ const DeviceContainer = styled.div`
 
 const DeviceScaler = styled.div`
   height: 100%;
-  margin: 0 auto;
   ${props => props.isNaked && `
     width: 100%;
   `}
