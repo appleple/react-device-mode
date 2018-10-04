@@ -6,7 +6,9 @@ export const onIframeUrlChange = (iframe: HTMLIFrameElement, callback: Function)
       try {
         iframe.contentWindow.removeEventListener("unload", unloadHandler);
         iframe.contentWindow.addEventListener("unload", unloadHandler);
-        callback(iframe.contentDocument.location.href);
+        setTimeout(() => {
+          callback(iframe.contentDocument.location.href);
+        }, 100);
       } catch (e) {
         console.log(e);
       }
