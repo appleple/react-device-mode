@@ -247,6 +247,7 @@ const DeviceScreen = styled.iframe`
   width: 100%;
   height: 100%;
   box-sizing: border-box;
+  background-color: #FFF;
   ${props => !props.isNaked && `
   border: 1px solid #CCC;
   border-radius: 2px;
