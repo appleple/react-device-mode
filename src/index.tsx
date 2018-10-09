@@ -4,7 +4,7 @@ import { DeviceModeContext, DeviceMode } from './context';
 import Header from './components/header';
 import Device from './components/device';
 import { DeviceModeState, DeviceProps } from './type';
-
+import { FrameLeft, FrameRight, FrameTop, FrameBottom, FramePosTop } from './constants';
 
 const showAnimation = keyframes`
   from {
@@ -120,7 +120,25 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
         updateHeight: (height) => this.setState({ height }),
         updateSize: (width, height) => this.setState({ width, height }),
         updateDevice: (deviceUA) => this.updateDevice(deviceUA),
-        updateScale: (scale) => this.setState({ scale }),
+        updateScale: (scale) => {
+          if (scale === -1) {
+            const wrapperHeight = this.ele.offsetHeight - FramePosTop;
+            const frameHeight = this.state.hasFrame? height + FrameTop + FrameBottom : height + 20;
+            const scaleHeightRatio = wrapperHeight / frameHeight * 100;
+
+            const wrapperWidth = this.ele.offsetWidth;
+            const frameWidth = this.state.hasFrame ? width + FrameRight + FrameLeft : width + 40;
+            const scaleWidthRatio = wrapperWidth / frameWidth * 100;
+
+            const scaleRatio = scaleHeightRatio < scaleWidthRatio ? scaleHeightRatio : scaleWidthRatio;
+
+            this.setState({
+              scale: scaleRatio
+            });
+          } else {
+            this.setState({ scale })
+          }
+        },
         switchOrientation: () => {
           const { orientation } = this.state;
           if (orientation === 'portrait') {

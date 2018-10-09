@@ -4,11 +4,7 @@ import styled, { keyframes } from 'styled-components';
 import { DeviceModeContext } from '../context';
 import { onIframeUrlChange } from '../util';
 import { DeviceModeContextType, DeviceComponentProps } from '../type';
-
-const FrameLeft = 18;
-const FrameRight = 18;
-const FrameTop = 60;
-const FrameBottom = 70;
+import { FrameLeft, FrameRight, FrameTop, FrameBottom, FramePosTop } from '../constants';
 
 const deviceAnimation = keyframes`
   from {
@@ -44,7 +40,7 @@ const DeviceContainer = styled.div`
     display: flex;
     justify-content: center;
     background-color: #DDDDDD;
-    padding-top: ${FrameTop + 20}px;
+    padding-top: ${FramePosTop}px;
     padding-right: 10px;
     padding-left: 10px;
     box-sizing: border-box;
@@ -59,13 +55,7 @@ const DeviceScaler = styled.div`
     width: 100%;
   `}
   ${props => !props.isNaked && `
-  transform: scale(${(() => {
-      if (props.scale === -1) {
-        return (window.innerHeight - 235) / props.height
-      } else {
-        return props.scale / 100
-      }
-    })()});
+  transform: scale(${props.scale / 100});
   transform-origin: top center;
   .handle-right {
     position: relative;

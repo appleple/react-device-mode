@@ -14,7 +14,7 @@ class TestPreview extends Component<{}, { url: string, isNaked: boolean }> {
 
   render() {
     const { url, isNaked } = this.state;
-    return (<div style={{ height: '500px' }}>
+    return (<div style={{ height: '100vh' }}>
       <link rel="stylesheet" href="https://developer.a-blogcms.jp/themes/system/css/acms-admin.css" />
       <ReactDeviceMode
         isNaked={isNaked}

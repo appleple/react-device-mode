@@ -95,7 +95,16 @@ const RotateIcon = styled.span`
 `
 
 export default class Header extends Component<{ header: ReactNode, sub: ReactNode, hasCloseBtn: boolean }, null> {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      scale: 100
+    };
+
+  }
   render() {
+    const { scale } = this.state;
     const { hasCloseBtn, header, sub } = this.props;
     return (<HeaderStyle>
       <DeviceModeContext.Consumer>
@@ -112,7 +121,10 @@ export default class Header extends Component<{ header: ReactNode, sub: ReactNod
                 <InputStyle type="number" value={context.state.height} onInput={(e: React.FormEvent<HTMLInputElement>) => { context.actions.updateHeight(parseInt(e.target.value)) }} disabled={context.state.resizable !== true} />
               </InputGroup>
               <InputGroup>
-                <select value={context.state.scale} onChange={(e: { target: HTMLSelectElement }) => {
+                <select value={scale} onChange={(e: { target: HTMLSelectElement }) => {
+                  this.setState({
+                    scale: e.target.value
+                  });
                   context.actions.updateScale(parseInt(e.target.value))
                 }}>
                   <option value="50">50%</option>
