@@ -94,7 +94,7 @@ const RotateIcon = styled.span`
   height: 16px;
 `
 
-export default class Header extends Component<{ header: ReactNode, sub: ReactNode, hasCloseBtn: boolean }, null> {
+export default class Header extends Component<{ header: ReactNode, sub: ReactNode, hasCloseBtn: boolean }, { scale: number }> {
 
   constructor(props) {
     super(props);
@@ -123,7 +123,7 @@ export default class Header extends Component<{ header: ReactNode, sub: ReactNod
               <InputGroup>
                 <select value={scale} onChange={(e: { target: HTMLSelectElement }) => {
                   this.setState({
-                    scale: e.target.value
+                    scale: parseInt(e.target.value)
                   });
                   context.actions.updateScale(parseInt(e.target.value))
                 }}>

@@ -33,7 +33,9 @@ const spinnerAnimation = keyframes`
   }
 `
 
-const DeviceContainer = styled.div`
+const DeviceContainer = styled.div<{
+  isNaked: boolean
+}>`
   width: 100%;
   height: 100%;
   ${props => !props.isNaked && `
@@ -49,7 +51,10 @@ const DeviceContainer = styled.div`
   }
 `;
 
-const DeviceScaler = styled.div`
+const DeviceScaler = styled.div<{
+  isNaked: boolean,
+  scale: number
+}>`
   height: 100%;
   ${props => props.isNaked && `
     width: 100%;
@@ -166,7 +171,12 @@ const DeviceScaler = styled.div`
 	`
   }}`
 
-const DeviceWrapper = styled.div`
+const DeviceWrapper = styled.div<{ 
+  isNaked: boolean,
+  resizable: boolean,
+  hasFrame: boolean,
+  orientation: string
+}>`
   margin: 0 auto;
   width: 100%;
   height: 100%;
@@ -233,7 +243,10 @@ const DeviceWrapper = styled.div`
   `}
 `;
 
-const DeviceScreen = styled.iframe`
+const DeviceScreen = styled.iframe<{
+  isNaked: boolean,
+  isLoading: boolean
+}>`
   width: 100%;
   height: 100%;
   box-sizing: border-box;
@@ -277,7 +290,7 @@ export default class Device extends Component<DeviceComponentProps, { refreshTim
     getUrl: ({ url, refreshTime, ua }) => url
   }
 
-  iframe: HTMLElement;
+  iframe: HTMLIFrameElement;
 
   constructor(props) {
     super(props);
@@ -369,12 +382,11 @@ export default class Device extends Component<DeviceComponentProps, { refreshTim
             >
               <DeviceWrapper
                 resizable={context.state.resizable}
-                height={context.state.height}
                 orientation={context.state.orientation}
                 hasFrame={context.state.hasFrame}
                 isNaked={isNaked}>
                 {isLoading &&
-                  <LoadingScreen isNaked={isNaked}>
+                  <LoadingScreen>
                     <Spinner />
                   </LoadingScreen>
                 }
@@ -385,7 +397,7 @@ export default class Device extends Component<DeviceComponentProps, { refreshTim
                     url: context.state.src,
                     refreshTime: refreshTime,
                     ua: context.state.ua
-                  })} innerRef={(iframe: HTMLIframeElement) => {
+                  })} innerRef={(iframe: HTMLIFrameElement) => {
                     this.iframe = iframe;
                   }} />
               </DeviceWrapper>

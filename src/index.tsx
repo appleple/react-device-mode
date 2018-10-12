@@ -77,7 +77,7 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
       }
       return false;
     });
-    this.setState(device, () => {
+    this.setState(Object.assign({}, this.state, device), () => {
       this.adJustWindowSize();
       if (this.props.onDeviceUpdated) {
         this.props.onDeviceUpdated(Object.assign({}, this.state));
@@ -125,11 +125,9 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
             const wrapperHeight = this.ele.offsetHeight - FramePosTop;
             const frameHeight = this.state.hasFrame? height + FrameTop + FrameBottom : height + 20;
             const scaleHeightRatio = wrapperHeight / frameHeight * 100;
-
             const wrapperWidth = this.ele.offsetWidth;
             const frameWidth = this.state.hasFrame ? width + FrameRight + FrameLeft : width + 40;
             const scaleWidthRatio = wrapperWidth / frameWidth * 100;
-
             const scaleRatio = scaleHeightRatio < scaleWidthRatio ? scaleHeightRatio : scaleWidthRatio;
 
             this.setState({
