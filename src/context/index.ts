@@ -3,6 +3,7 @@ import { DeviceModeState } from '../type';
 
 export const DeviceMode: DeviceModeState = {
   devices: [],
+  defaultDevice: '',
   width: 375,
   height: 667,
   orientation: 'portrait',

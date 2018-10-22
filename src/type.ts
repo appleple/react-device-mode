@@ -6,6 +6,7 @@ export interface I18n {
 
 export interface Device {
   devices: DeviceType[],
+  defaultDevice: string,
   src: string,
   i18n: I18n
 }

@@ -35,6 +35,7 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
     super(props);
     this.state = Object.assign({}, DeviceMode, {
       devices: props.devices,
+      defaultDevice: props.defaultDevice,
       src: props.src,
       i18n: Object.assign({}, DeviceMode.i18n, props.i18n)
     });
@@ -42,8 +43,9 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
 
   componentDidMount() {
     const { devices } = this.state;
+    const { defaultDevice } = this.props;
     if (devices && devices.length) {
-      const deviceName = devices[0].name;
+      const deviceName = defaultDevice || devices[0].name;
       this.updateDevice(deviceName);
     }
     window.addEventListener('resize', () => {
@@ -76,8 +78,8 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
         return true;
       }
       return false;
-    });
-    this.setState(Object.assign({}, this.state, device), () => {
+    }) || devices[0];
+    this.setState(device, () => {
       this.adJustWindowSize();
       if (this.props.onDeviceUpdated) {
         this.props.onDeviceUpdated(Object.assign({}, this.state));

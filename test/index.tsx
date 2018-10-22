@@ -20,6 +20,7 @@ class TestPreview extends Component<{}, { url: string, isNaked: boolean }> {
         isNaked={isNaked}
         src={url}
         i18n={{ fitWindow: '画面サイズにあわせる' }}
+        defaultDevice="iPhone 6"
         devices={[
           {
             name: 'PC',

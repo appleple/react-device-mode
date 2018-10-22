@@ -112,7 +112,7 @@ export default class Header extends Component<{ header: ReactNode, sub: ReactNod
           <Fragment>
             <HeaderInner className="acms-admin-form">
               {header}
-              <select onChange={(e) => { context.actions.updateDevice(e.target.value) }}>
+              <select defaultValue={context.state.defaultDevice} onChange={(e) => { context.actions.updateDevice(e.target.value) }}>
                 {context.state.devices.map(device => <option value={device.name}>{device.name}</option>)}
               </select>
               <InputGroup>
