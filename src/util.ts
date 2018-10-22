@@ -9,9 +9,7 @@ export const onIframeUrlChange = (iframe: HTMLIFrameElement, callback: Function)
         setTimeout(() => {
           callback(iframe.contentDocument.location.href);
         }, 100);
-      } catch (e) {
-        console.log(e);
-      }
+      } catch (e) {}
     }, 0);
   };
   iframe.contentWindow.removeEventListener("unload", unloadHandler);
