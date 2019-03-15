@@ -1,17 +1,13 @@
 export const onIframeUrlChange = (iframe: HTMLIFrameElement, callback: Function): void => {
-  const unloadHandler = () => {
-    // Timeout needed because the URL changes immediately after
-    // the `unload` event is dispatched.
-    setTimeout(() => {
-      try {
-        iframe.contentWindow.removeEventListener("unload", unloadHandler);
-        iframe.contentWindow.addEventListener("unload", unloadHandler);
-        setTimeout(() => {
-          callback(iframe.contentDocument.location.href);
-        }, 100);
-      } catch (e) {}
-    }, 0);
-  };
-  iframe.contentWindow.removeEventListener("unload", unloadHandler);
-  iframe.contentWindow.addEventListener("unload", unloadHandler);
+  window.addEventListener('message', (e) => {
+    if (e.data.task === 'preview') {
+      setTimeout(() => {
+        try {
+          setTimeout(() => {
+            callback(e.data.url);
+          }, 100);
+        } catch (e) {}
+      }, 0);
+    }
+  });
 };

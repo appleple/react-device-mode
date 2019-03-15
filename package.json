@@ -6,6 +6,7 @@
   "scripts": {
     "test": "jest",
     "babel": "babel src --out-dir lib --extensions \".ts,.tsx\"",
+    "babel:watch": "babel src --out-dir lib -w --extensions \".ts,.tsx\"",
     "start": "webpack-dev-server ./test/index.tsx --mode development --open",
     "build-storybook": "build-storybook",
     "build": "webpack ./test/index.tsx --development",
