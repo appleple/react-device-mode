@@ -350,7 +350,7 @@ export default class Device extends Component<DeviceComponentProps, { refreshTim
 
     iframe.addEventListener("load", () => {
       if (iframe && iframe.contentDocument && iframe.contentDocument.body) {
-        iframe.contentDocument.body.style.width = '100vw';
+        iframe.contentDocument.body.style.maxWidth = '100vw';
       }
       if (this.props.onIframeLoaded) {
         this.props.onIframeLoaded();
