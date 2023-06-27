@@ -171,7 +171,7 @@ const DeviceScaler = styled.div<{
 	`
   }}`
 
-const DeviceWrapper = styled.div<{ 
+const DeviceWrapper = styled.div<{
   isNaked: boolean,
   resizable: boolean,
   hasFrame: boolean,
@@ -258,7 +258,7 @@ const DeviceScreen = styled.iframe<{
   ${props => props.isNaked && `
   border: none;
   `}
-  ${props => !props.isLoading ? 'display: block;' : 'display: none;'}
+  ${props => !props.isLoading ? 'visibility: visible;' : 'visibility: hidden;'}
 `;
 
 const LoadingScreen = styled.div`
