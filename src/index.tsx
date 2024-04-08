@@ -26,7 +26,8 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
 
   static defaultProps = {
     hasCloseBtn: true,
-    isLoading: false
+    isLoading: false,
+    hasHistoryDevice: true,
   }
 
   ele: HTMLElement

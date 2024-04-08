@@ -113,7 +113,7 @@ export default class Header extends Component<{ header: ReactNode, sub: ReactNod
             <HeaderInner className="acms-admin-form">
               {header}
               <select defaultValue={context.state.defaultDevice} onChange={(e) => { context.actions.updateDevice(e.target.value) }}>
-                {context.state.devices.map(device => <option value={device.name}>{device.name}</option>)}
+                {context.state.devices.map((device, index) => <option value={device.name} key={index}>{device.name}</option>)}
               </select>
               <InputGroup>
                 <InputStyle type="number" value={context.state.width} onInput={(e: React.FormEvent<HTMLInputElement>) => { context.actions.updateWidth(parseInt(e.target.value)) }} disabled={context.state.resizable !== true} />

@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import Resizable from 're-resizable';
-import styled, { keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { DeviceModeContext } from '../context';
 import { onIframeUrlChange } from '../util';
 import { DeviceModeContextType, DeviceComponentProps } from '../type';
@@ -38,7 +38,7 @@ const DeviceContainer = styled.div<{
 }>`
   width: 100%;
   height: 100%;
-  ${props => !props.isNaked && `
+  ${props => !props.isNaked && css`
     display: flex;
     justify-content: center;
     background-color: #DDDDDD;
@@ -56,10 +56,10 @@ const DeviceScaler = styled.div<{
   scale: number
 }>`
   height: 100%;
-  ${props => props.isNaked && `
+  ${props => props.isNaked && css`
     width: 100%;
   `}
-  ${props => !props.isNaked && `
+  ${props => !props.isNaked && css`
   transform: scale(${props.scale / 100});
   transform-origin: top center;
   .handle-right {
@@ -185,7 +185,7 @@ const DeviceWrapper = styled.div<{
     overflow: auto;
     -webkit-overflow-scrolling: touch;
   `}
-  ${props => !props.isNaked && `
+  ${props => !props.isNaked && css`
   border: 2px solid #bcbcbc;
   animation ${deviceAnimation} .5s ease-out;
   ${(props.resizable || !props.hasFrame) ? '' : `
@@ -348,14 +348,16 @@ export default class Device extends Component<DeviceComponentProps, { refreshTim
       this.props.getIframe(iframe);
     }
 
-    iframe.addEventListener("load", () => {
-      if (iframe && iframe.contentDocument && iframe.contentDocument.body) {
-        iframe.contentDocument.body.style.maxWidth = '100vw';
-      }
-      if (this.props.onIframeLoaded) {
-        this.props.onIframeLoaded();
-      }
-    });
+    if(iframe) {
+      iframe.addEventListener("load", () => {
+        if (iframe && iframe.contentDocument && iframe.contentDocument.body) {
+          iframe.contentDocument.body.style.maxWidth = '100vw';
+        }
+        if (this.props.onIframeLoaded) {
+          this.props.onIframeLoaded();
+        }
+      });
+    }
   }
 
   render() {
