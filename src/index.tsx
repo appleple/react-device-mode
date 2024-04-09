@@ -128,7 +128,7 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
     if(hasHistoryDevice) {
       try {
         const historyDevice = localStorage.getItem(HistoryDeviceKey);
-        return historyDevice || '';
+        return historyDevice || this.state.defaultDevice;
       }
       finally{}
     }
@@ -164,7 +164,6 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
             const frameWidth = this.state.hasFrame ? width + FrameRight + FrameLeft : width + 40;
             const scaleWidthRatio = wrapperWidth / frameWidth * 100;
             const scaleRatio = scaleHeightRatio < scaleWidthRatio ? scaleHeightRatio : scaleWidthRatio;
-
             this.setState({
               scale: scaleRatio
             });
