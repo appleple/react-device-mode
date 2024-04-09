@@ -28,23 +28,29 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
     hasCloseBtn: true,
     isLoading: false,
     hasHistoryDevice: true,
+    HistoryDeviceKey: 'reactDeviceModeHistory'
   }
 
   ele: HTMLElement
 
   constructor(props: DeviceProps) {
     super(props);
+
     this.state = Object.assign({}, DeviceMode, {
       devices: props.devices,
       defaultDevice: props.defaultDevice,
       src: props.src,
       i18n: Object.assign({}, DeviceMode.i18n, props.i18n)
     });
+
+    const historyDevice = this.getHistoryDevice();
+    if(historyDevice !== typeof null) {
+      this.state.defaultDevice = historyDevice
+    }
   }
 
   componentDidMount() {
-    const { devices } = this.state;
-    const { defaultDevice } = this.props;
+    const { devices, defaultDevice } = this.state;
     if (devices && devices.length) {
       const deviceName = defaultDevice || devices[0].name;
       this.updateDevice(deviceName);
@@ -61,6 +67,9 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
 
   adJustWindowSize() {
     const { width, resizable } = this.state;
+
+    if(this.ele) return
+
     if (this.props.isNaked) {
       this.setState({
         width: this.ele.offsetWidth
@@ -76,6 +85,7 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
     const { devices } = this.state;
     const device = devices.find((item) => {
       if (item.name === deviceName) {
+        this.setHistoryDevice(deviceName);
         return true;
       }
       return false;
@@ -100,7 +110,7 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
     }
   }
 
-  getIframe(iframe) {
+  getIframe(iframe: HTMLIFrameElement) {
     if (this.props.getIframe) {
       this.props.getIframe(iframe);
     }
@@ -111,6 +121,28 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
       return { src: nextProps.src }
     }
     return null;
+  }
+
+  getHistoryDevice(): string | null {
+    const { hasHistoryDevice, HistoryDeviceKey } = this.props;
+    if(hasHistoryDevice) {
+      try {
+        const historyDevice = localStorage.getItem(HistoryDeviceKey);
+        return historyDevice || '';
+      }
+      finally{}
+    }
+    return null
+  }
+
+  setHistoryDevice(device: string) {
+    const { hasHistoryDevice, HistoryDeviceKey } = this.props;
+    if(hasHistoryDevice) {
+      try {
+        localStorage.setItem(HistoryDeviceKey, device);
+      }
+      finally{}
+    }
   }
 
   render() {
@@ -159,7 +191,7 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
         }
       }
     }} >
-      <ViwerStyle innerRef={(ele) => {
+      <ViwerStyle ref={(ele) => {
         this.ele = ele;
       }}>
         {!isNaked &&

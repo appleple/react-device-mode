@@ -8,7 +8,7 @@ class TestPreview extends Component<{}, { url: string, isNaked: boolean }> {
     super(props);
     this.state = {
       url: '/test/test.html',
-      isNaked: false
+      isNaked: false,
     }
   }
 
@@ -21,6 +21,7 @@ class TestPreview extends Component<{}, { url: string, isNaked: boolean }> {
         src={url}
         i18n={{ fitWindow: '画面サイズにあわせる' }}
         defaultDevice="iPhone 6"
+        hasHistoryDevice={true}
         devices={[
           {
             name: 'PC',
