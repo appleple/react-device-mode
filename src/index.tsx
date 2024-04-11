@@ -148,63 +148,62 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
   render() {
     const { width, height } = this.state;
     const { header, sub, refreshTime, getUrl, hasCloseBtn, isLoading, isNaked } = this.props;
-    return (<DeviceModeContext.Provider value={{
-      state: this.state,
-      actions: {
-        updateWidth: (width) => this.setState({ width }),
-        updateHeight: (height) => this.setState({ height }),
-        updateSize: (width, height) => this.setState({ width, height }),
-        updateDevice: (deviceUA) => this.updateDevice(deviceUA),
-        updateScale: (scale) => {
-          if (scale === -1) {
-            const wrapperHeight = this.ele.offsetHeight - FramePosTop;
-            const frameHeight = this.state.hasFrame? height + FrameTop + FrameBottom : height + 20;
-            const scaleHeightRatio = wrapperHeight / frameHeight * 100;
-            const wrapperWidth = this.ele.offsetWidth;
-            const frameWidth = this.state.hasFrame ? width + FrameRight + FrameLeft : width + 40;
-            const scaleWidthRatio = wrapperWidth / frameWidth * 100;
-            const scaleRatio = scaleHeightRatio < scaleWidthRatio ? scaleHeightRatio : scaleWidthRatio;
-            this.setState({
-              scale: scaleRatio
-            });
-          } else {
-            this.setState({ scale })
-          }
-        },
-        switchOrientation: () => {
-          const { orientation } = this.state;
-          if (orientation === 'portrait') {
-            this.setState({
-              orientation: 'landscape'
-            });
-          } else {
-            this.setState({
-              orientation: 'portrait'
-            });
-          }
-        },
-        onClose: () => {
-          if (this.props.onClose) {
-            this.props.onClose();
+    return (
+      <DeviceModeContext.Provider value={{
+        state: this.state,
+        actions: {
+          updateWidth: (width) => this.setState({ width }),
+          updateHeight: (height) => this.setState({ height }),
+          updateSize: (width, height) => this.setState({ width, height }),
+          updateDevice: (deviceUA) => this.updateDevice(deviceUA),
+          updateScale: (scale) => {
+            if (scale === -1) {
+              const wrapperHeight = this.ele.offsetHeight - FramePosTop;
+              const frameHeight = this.state.hasFrame? height + FrameTop + FrameBottom : height + 20;
+              const scaleHeightRatio = wrapperHeight / frameHeight * 100;
+              const wrapperWidth = this.ele.offsetWidth;
+              const frameWidth = this.state.hasFrame ? width + FrameRight + FrameLeft : width + 40;
+              const scaleWidthRatio = wrapperWidth / frameWidth * 100;
+              const scaleRatio = scaleHeightRatio < scaleWidthRatio ? scaleHeightRatio : scaleWidthRatio;
+              this.setState({
+                scale: scaleRatio
+              });
+            } else {
+              this.setState({ scale })
+            }
+          },
+          switchOrientation: () => {
+            const { orientation } = this.state;
+            if (orientation === 'portrait') {
+              this.setState({
+                orientation: 'landscape'
+              });
+            } else {
+              this.setState({
+                orientation: 'portrait'
+              });
+            }
+          },
+          onClose: () => {
+            if (this.props.onClose) {
+              this.props.onClose();
+            }
           }
         }
-      }
-    }} >
-      <ViwerStyle ref={(ele) => {
-        this.ele = ele;
       }}>
-        {!isNaked &&
-          <Header header={header} sub={sub} hasCloseBtn={hasCloseBtn} />}
-        <Device
-          isNaked={isNaked}
-          refreshTime={refreshTime}
-          getUrl={getUrl}
-          isLoading={isLoading}
-          onUrlChange={this.onUrlChange.bind(this)}
-          onIframeLoaded={this.onIframeLoaded.bind(this)}
-          getIframe={(iframe) => { this.getIframe(iframe) }}
-        />
-      </ViwerStyle>
+        <ViwerStyle ref={(ele) => { this.ele = ele }}>
+          {!isNaked &&
+            <Header header={header} sub={sub} hasCloseBtn={hasCloseBtn} />}
+            <Device
+              isNaked={isNaked}
+              refreshTime={refreshTime}
+              getUrl={getUrl}
+              isLoading={isLoading}
+              onUrlChange={this.onUrlChange.bind(this)}
+              onIframeLoaded={this.onIframeLoaded.bind(this)}
+              getIframe={(iframe) => { this.getIframe(iframe) }}
+            />
+        </ViwerStyle>
     </DeviceModeContext.Provider>)
   }
 }
