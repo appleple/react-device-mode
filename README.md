@@ -33,3 +33,14 @@ $ npm install react-device-mode --save
   ]}
 />);
 ```
+
+# Options
+|Name|Default|Description|
+| ------ |---|---|
+| src | - | Set the URL of the page you want to display. |
+| defaultDevice | - | First, set the device to be displayed. |
+| devices | - | Set the device information that can be displayed. |
+| hasHstoryDevice | true | Saves the most recently used device method　in local storage. |
+| historyDeviceKey | 'reactDeviceModeHistory' | Set the local storage key. |
+| hasCloseBtn | true | Sets the display of the close button. |
+| isLoading | false | Set loading display. |

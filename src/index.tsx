@@ -28,7 +28,7 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
     hasCloseBtn: true,
     isLoading: false,
     hasHistoryDevice: true,
-    HistoryDeviceKey: 'reactDeviceModeHistory'
+    historyDeviceKey: 'reactDeviceModeHistory'
   }
 
   ele: HTMLElement
@@ -124,10 +124,10 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
   }
 
   getHistoryDevice(): string | null {
-    const { hasHistoryDevice, HistoryDeviceKey } = this.props;
+    const { hasHistoryDevice, historyDeviceKey } = this.props;
     if(hasHistoryDevice) {
       try {
-        const historyDevice = localStorage.getItem(HistoryDeviceKey);
+        const historyDevice = localStorage.getItem(historyDeviceKey);
         return historyDevice || this.state.defaultDevice;
       }
       finally{}
@@ -136,10 +136,10 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
   }
 
   setHistoryDevice(device: string) {
-    const { hasHistoryDevice, HistoryDeviceKey } = this.props;
+    const { hasHistoryDevice, historyDeviceKey } = this.props;
     if(hasHistoryDevice) {
       try {
-        localStorage.setItem(HistoryDeviceKey, device);
+        localStorage.setItem(historyDeviceKey, device);
       }
       finally{}
     }
