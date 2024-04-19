@@ -44,7 +44,7 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
     });
 
     const historyDevice = this.getHistoryDevice();
-    if(historyDevice !== typeof null) {
+    if(historyDevice) {
       this.state.defaultDevice = historyDevice
     }
   }
@@ -130,7 +130,9 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
         const historyDevice = localStorage.getItem(historyDeviceKey);
         return historyDevice || this.state.defaultDevice;
       }
-      finally{}
+      catch {
+        return null
+      }
     }
     return null
   }
@@ -141,7 +143,9 @@ export default class ReactDeviceMode extends Component<DeviceProps, DeviceModeSt
       try {
         localStorage.setItem(historyDeviceKey, device);
       }
-      finally{}
+      catch {
+        return null
+      }
     }
   }
 
