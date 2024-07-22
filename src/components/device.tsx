@@ -1,10 +1,20 @@
-import React, { Component } from 'react';
-import { Resizable } from 're-resizable';
+/* eslint react/react-in-jsx-scope: 0 */
+import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { NumberSize, Resizable, ResizeDirection } from 're-resizable';
 import styled, { css, keyframes } from 'styled-components';
-import { DeviceModeContext } from '../context';
+import { useDeviceModeStore } from '../stores';
 import { onIframeUrlChange } from '../util';
-import { DeviceModeContextType, DeviceComponentProps } from '../type';
 import { FrameLeft, FrameRight, FrameTop, FrameBottom, FramePosTop } from '../constants';
+
+export interface DeviceProps {
+  refreshTime?: Date;
+  getUrl?(option: { url: string; ua: string; refreshTime: Date }): string;
+  onUrlChange?(url: string): void;
+  onIframeLoaded?(): void;
+  getIframe?(iframe: HTMLIFrameElement): void;
+  isLoading?: boolean;
+  isNaked?: boolean;
+}
 
 const deviceAnimation = keyframes`
   from {
@@ -16,7 +26,7 @@ const deviceAnimation = keyframes`
     transform: translateY(0);
     opacity: 1;
   }
-`
+`;
 
 const spinnerAnimation = keyframes`
   0% {
@@ -31,176 +41,191 @@ const spinnerAnimation = keyframes`
     opacity: .4;
     transform: rotate(360deg);
   }
-`
+`;
 
 const DeviceContainer = styled.div<{
-  isNaked: boolean
+  $isNaked: boolean;
 }>`
   width: 100%;
   height: 100%;
-  ${props => !props.isNaked && css`
-    display: flex;
-    justify-content: center;
-    background-color: #DDDDDD;
-    padding-top: ${FramePosTop}px;
-    padding-right: 10px;
-    padding-left: 10px;
-    box-sizing: border-box;
-    overflow: auto;
-    `
-  }
+  ${(props) =>
+    !props.$isNaked &&
+    css`
+      display: flex;
+      justify-content: center;
+      background-color: #dddddd;
+      padding-top: ${FramePosTop}px;
+      padding-right: 10px;
+      padding-left: 10px;
+      box-sizing: border-box;
+      overflow: auto;
+    `}
 `;
 
 const DeviceScaler = styled.div<{
-  isNaked: boolean,
-  scale: number
+  $isNaked: boolean;
+  $scale: number;
 }>`
   height: 100%;
-  ${props => props.isNaked && css`
-    width: 100%;
-  `}
-  ${props => !props.isNaked && css`
-  transform: scale(${props.scale / 100});
-  transform-origin: top center;
-  .handle-right {
-    position: relative;
-    background: #bbb;
-    transition: background .3s;
-    right: -${1 / props.scale * 2000}px !important;
-    width: ${1 / props.scale * 2000}px !important
-    &:hover {
-      background: #999;
-    }
-    &:before {
-      content: "";
-      display: block;
-      position: absolute;
-      top: 50%;
-      border-radius: 2px;
-			left: ${1 / props.scale * 600}px;
-			width: ${1 / props.scale * 300}px;
-			height: ${1 / props.scale * 3000}px;
-			margin-top: -${1 / props.scale * 1500}px;
-      background-color: #fff;
-    }
-    &:after {
-      content: "";
-      display: block;
-      position: absolute;
-      top: 50%;
-      border-radius: 2px;
-			left: ${1 / props.scale * 1200}px;
-			width: ${1 / props.scale * 300}px;
-			height: ${1 / props.scale * 3000}px;
-			margin-top: -${1 / props.scale * 1500}px;
-      background-color: #fff;
-    }
-  }
-  .handle-bottom {
-    background: #999;
-    position: relative;
-    background: #bbb;
-    transition: background .3s;
-    bottom: -${1 / props.scale * 2000}px !important;
-    height: ${1 / props.scale * 2000}px !important
-    &:hover {
-      background: #999;
-    }
-    &:before {
-      content: "";
-      display: block;
-      position: absolute;
-      left: 50%;
-      border-radius: 2px;
-      top: ${1 / props.scale * 600}px;
-			height: ${1 / props.scale * 300}px;
-			width: ${1 / props.scale * 3000}px;
-			margin-left: -${1 / props.scale * 1500}px;
-      background-color: #fff;
-    }
-    &:after {
-      content: "";
-      display: block;
-      position: absolute;
-      top: 6px;
-      left: 50%;
-      border-radius: 2px;
-			top: ${1 / props.scale * 1200}px;
-			height: ${1 / props.scale * 300}px;
-			width: ${1 / props.scale * 3000}px;
-			margin-left: -${1 / props.scale * 1500}px;
-      background-color: #fff;
-    }
-  }
-  .handle-bottom-right {
-    background: #bbb;
-    transition: background .3s;
-   	right: -${1 / props.scale * 2000}px !important;
-		bottom: -${1 / props.scale * 2000}px !important;
-		height: ${1 / props.scale * 2000}px !important;
-		width: ${1 / props.scale * 2000}px !important;
+  ${(props) =>
+    props.$isNaked &&
+    css`
+      width: 100%;
+    `}
+  ${(props) =>
+    !props.$isNaked &&
+    css`
+      transform: scale(${props.$scale / 100});
+      transform-origin: top center;
+      .handle-right {
+        position: relative;
+        background: #bbb;
+        transition: background 0.3s;
+        right: -${(1 / props.$scale) * 2000}px !important;
+        width: ${(1 / props.$scale) * 2000}px !important;
+        &:hover {
+          background: #999;
+        }
+        &:before {
+          content: '';
+          display: block;
+          position: absolute;
+          top: 50%;
+          border-radius: 2px;
+          left: ${(1 / props.$scale) * 600}px;
+          width: ${(1 / props.$scale) * 300}px;
+          height: ${(1 / props.$scale) * 3000}px;
+          margin-top: -${(1 / props.$scale) * 1500}px;
+          background-color: #fff;
+        }
+        &:after {
+          content: '';
+          display: block;
+          position: absolute;
+          top: 50%;
+          border-radius: 2px;
+          left: ${(1 / props.$scale) * 1200}px;
+          width: ${(1 / props.$scale) * 300}px;
+          height: ${(1 / props.$scale) * 3000}px;
+          margin-top: -${(1 / props.$scale) * 1500}px;
+          background-color: #fff;
+        }
+      }
+      .handle-bottom {
+        background: #999;
+        position: relative;
+        background: #bbb;
+        transition: background 0.3s;
+        bottom: -${(1 / props.$scale) * 2000}px !important;
+        height: ${(1 / props.$scale) * 2000}px !important;
+        &:hover {
+          background: #999;
+        }
+        &:before {
+          content: '';
+          display: block;
+          position: absolute;
+          left: 50%;
+          border-radius: 2px;
+          top: ${(1 / props.$scale) * 600}px;
+          height: ${(1 / props.$scale) * 300}px;
+          width: ${(1 / props.$scale) * 3000}px;
+          margin-left: -${(1 / props.$scale) * 1500}px;
+          background-color: #fff;
+        }
+        &:after {
+          content: '';
+          display: block;
+          position: absolute;
+          top: 6px;
+          left: 50%;
+          border-radius: 2px;
+          top: ${(1 / props.$scale) * 1200}px;
+          height: ${(1 / props.$scale) * 300}px;
+          width: ${(1 / props.$scale) * 3000}px;
+          margin-left: -${(1 / props.$scale) * 1500}px;
+          background-color: #fff;
+        }
+      }
+      .handle-bottom-right {
+        background: #bbb;
+        transition: background 0.3s;
+        right: -${(1 / props.$scale) * 2000}px !important;
+        bottom: -${(1 / props.$scale) * 2000}px !important;
+        height: ${(1 / props.$scale) * 2000}px !important;
+        width: ${(1 / props.$scale) * 2000}px !important;
 
-    &:hover {
-      background: #999;
-    }
-    &:before {
-      content: "";
-      display: block;
-      position: absolute;
-      background-color: #fff;
-      transform: rotate(-45deg);
-      border-radius: 2px;
-      top: ${1 / props.scale * 800}px;
-      left: 0;
-      height: ${1 / props.scale * 300}px;
-      width: ${1 / props.scale * 2000}px;
-    }
-    &:after {
-      content: "";
-      display: block;
-      position: absolute;
-      background-color: #fff;
-      transform: rotate(-45deg);
-      border-radius: 2px;
-      top: ${1 / props.scale * 1300}px;
-      left: ${1 / props.scale * 800}px;
-      height: ${1 / props.scale * 300}px;
-      width: ${1 / props.scale * 1200}px;
-    }
-	}
-	`
-  }}`
+        &:hover {
+          background: #999;
+        }
+        &:before {
+          content: '';
+          display: block;
+          position: absolute;
+          background-color: #fff;
+          transform: rotate(-45deg);
+          border-radius: 2px;
+          top: ${(1 / props.$scale) * 800}px;
+          left: 0;
+          height: ${(1 / props.$scale) * 300}px;
+          width: ${(1 / props.$scale) * 2000}px;
+        }
+        &:after {
+          content: '';
+          display: block;
+          position: absolute;
+          background-color: #fff;
+          transform: rotate(-45deg);
+          border-radius: 2px;
+          top: ${(1 / props.$scale) * 1300}px;
+          left: ${(1 / props.$scale) * 800}px;
+          height: ${(1 / props.$scale) * 300}px;
+          width: ${(1 / props.$scale) * 1200}px;
+        }
+      }
+    `}
+`;
 
 const DeviceWrapper = styled.div<{
-  isNaked: boolean,
-  resizable: boolean,
-  hasFrame: boolean,
-  orientation: string
+  $isNaked: boolean;
+  $resizable: boolean;
+  $hasFrame: boolean;
+  $orientation: string;
 }>`
   margin: 0 auto;
   width: 100%;
   height: 100%;
   position: relative;
-  ${props => props.isNaked && `
+  ${(props) =>
+    props.$isNaked &&
+    `
     overflow: auto;
     -webkit-overflow-scrolling: touch;
   `}
-  ${props => !props.isNaked && css`
+  ${(props) =>
+    !props.$isNaked &&
+    css`
   border: 2px solid #bcbcbc;
   animation ${deviceAnimation} .5s ease-out;
-  ${(props.resizable || !props.hasFrame) ? '' : `
-  ${props.orientation === 'portrait' || props.resizable === true ? `
+  ${
+    props.$resizable || !props.$hasFrame
+      ? ''
+      : `
+  ${
+    props.$orientation === 'portrait' || props.$resizable
+      ? `
     padding-top: ${FrameTop}px;
     padding-left: ${FrameLeft}px;
     padding-right: ${FrameRight}px;
     padding-bottom: ${FrameBottom}px;
-  ` : `
+  `
+      : `
     padding-top: ${FrameRight}px;
     padding-left: ${FrameTop}px;
     padding-right: ${FrameBottom}px;
     padding-bottom: ${FrameLeft}px;
   `
-      }
+  }
   border-radius: 35px;
   clear: both;
   background: #333;
@@ -209,13 +234,17 @@ const DeviceWrapper = styled.div<{
     content: "";
     border: 2px solid #bcbcbc;
     position: absolute;
-    ${props.orientation === 'portrait' || props.resizable === true ? `
+    ${
+      props.$orientation === 'portrait' || props.$resizable
+        ? `
       bottom: 10px;
       left: calc(50% - 20px);
-    ` : `
+    `
+        : `
       right: 10px;
       bottom: calc(50% - 20px);
-    `}
+    `
+    }
     width: 40px;
     height: 40px;
     border-radius: 20px;
@@ -225,40 +254,49 @@ const DeviceWrapper = styled.div<{
     content: "";
     border: 3px solid #bcbcbc;
     position: absolute;
-    ${props.orientation === 'portrait' || props.resizable === true ? `
+    ${
+      props.$orientation === 'portrait' || props.$resizable
+        ? `
       top: 25px;
       left: calc(50% - 40px);
       width: 80px;
       height: 6px;
-    ` : `
+    `
+        : `
       left: 25px;
       top: calc(50% - 40px);
       width: 6px;
       height  80px;
-    `}
+    `
+    }
     border-radius: 5px;
     box-sizing: border-box;
   }
-  `}
+  `
+  }
   `}
 `;
 
 const DeviceScreen = styled.iframe<{
-  isNaked: boolean,
-  isLoading: boolean
+  $isNaked: boolean;
+  $isLoading: boolean;
 }>`
   width: 100%;
   height: 100%;
   box-sizing: border-box;
-  background-color: #FFF;
-  ${props => !props.isNaked && `
+  background-color: #fff;
+  ${(props) =>
+    !props.$isNaked &&
+    `
   border: 1px solid #CCC;
   border-radius: 2px;
   `}
-  ${props => props.isNaked && `
+  ${(props) =>
+    props.$isNaked &&
+    `
   border: none;
   `}
-  ${props => !props.isLoading ? 'visibility: visible;' : 'visibility: hidden;'}
+  ${(props) => (!props.$isLoading ? 'visibility: visible;' : 'visibility: hidden;')}
 `;
 
 const LoadingScreen = styled.div`
@@ -280,134 +318,128 @@ const Spinner = styled.div`
   border: 8px solid #333;
   border-right-color: transparent;
   border-radius: 50%;
-  animation: ${spinnerAnimation} .5s infinite linear;
-`
+  animation: ${spinnerAnimation} 0.5s infinite linear;
+`;
 
-export default class Device extends Component<DeviceComponentProps, { refreshTime: Date }> {
+export default function Device({
+  isLoading = false,
+  getUrl = ({ url }) => url,
+  refreshTime = new Date(),
+  isNaked = false,
+  ...props
+}: DeviceProps) {
+  const iframeRef = useRef<HTMLIFrameElement | null>(null);
+  const { state, actions, setFrameRef } = useDeviceModeStore();
 
-  static defaultProps = {
-    isLoading: false,
-    getUrl: ({ url, refreshTime, ua }) => url
-  }
-
-  iframe: HTMLIFrameElement;
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      refreshTime: props.refreshTime || new Date()
-    };
-  }
-
-  getRisizeConf(resizable) {
-    const resizeConf = {
+  const enable = useMemo(
+    () => ({
       top: false,
-      right: false,
-      bottom: false,
+      right: state.device.resizable && !isNaked,
+      bottom: state.device.resizable && !isNaked,
       left: false,
       topRight: false,
-      bottomRight: false,
+      bottomRight: state.device.resizable && !isNaked,
       bottomLeft: false,
-      topLeft: false
-    }
+      topLeft: false,
+    }),
+    [isNaked, state.device.resizable],
+  );
 
-    if (resizable && !this.props.isNaked) {
-      return Object.assign({}, resizeConf, { right: true, bottom: true, bottomRight: true });
-    }
-    return resizeConf;
-  }
-
-  getSize(state) {
-    if (this.props.isNaked) {
+  const size = useMemo(() => {
+    if (isNaked) {
       return { width: '100%', height: '100%' };
     }
-    if (!state.hasFrame) {
+    if (!state.device.hasFrame) {
       if (state.orientation === 'portrait') {
-        return { width: state.width + 2, height: state.height + 2 };
+        return { width: state.device.width + 2, height: state.device.height + 2 };
       } else {
-        return { width: state.height + 2, height: state.width + 2 };
+        return { width: state.device.height + 2, height: state.device.width + 2 };
       }
     }
-    const width = state.width + FrameLeft + FrameRight + 6;
-    const height = state.height + FrameTop + FrameBottom + 6;
+    const width = state.device.width + FrameLeft + FrameRight + 6;
+    const height = state.device.height + FrameTop + FrameBottom + 6;
     if (state.orientation === 'portrait') {
-      return { width, height }
+      return { width, height };
     }
-    return { width: height, height: width }
-  }
+    return { width: height, height: width };
+  }, [isNaked, state.device.hasFrame, state.device.height, state.device.width, state.orientation]);
 
-  componentDidMount() {
-    const { iframe } = this;
-    onIframeUrlChange(iframe, (url) => {
-      if (this.props.onUrlChange) {
-        this.props.onUrlChange(url);
+  useEffect(() => {
+    const iframe = iframeRef.current;
+    if (!iframe) {
+      return;
+    }
+
+    onIframeUrlChange((url) => {
+      if (props.onUrlChange) {
+        props.onUrlChange(url);
       }
     });
 
-    if (this.props.getIframe) {
-      this.props.getIframe(iframe);
+    if (props.getIframe) {
+      props.getIframe(iframe);
     }
 
-    if(iframe) {
-      iframe.addEventListener("load", () => {
-        if (iframe && iframe.contentDocument && iframe.contentDocument.body) {
-          iframe.contentDocument.body.style.maxWidth = '100vw';
-        }
-        if (this.props.onIframeLoaded) {
-          this.props.onIframeLoaded();
-        }
-      });
-    }
-  }
+    const handleIframeLoad = () => {
+      if (iframe && iframe.contentDocument && iframe.contentDocument.body) {
+        iframe.contentDocument.body.style.maxWidth = '100vw';
+      }
+      if (props.onIframeLoaded) {
+        props.onIframeLoaded();
+      }
+    };
 
-  render() {
+    iframe.addEventListener('load', handleIframeLoad);
 
-    const { refreshTime, isLoading, isNaked } = this.props;
+    return () => {
+      iframe.removeEventListener('load', handleIframeLoad);
+    };
+  }, [props]);
 
-    return (<DeviceModeContext.Consumer>
-      {(context: DeviceModeContextType) => (
-        <DeviceContainer isNaked={isNaked}>
-          <DeviceScaler scale={context.state.scale} isNaked={isNaked} >
-            <Resizable
-              enable={this.getRisizeConf(context.state.resizable)}
-              size={this.getSize(context.state)}
-              onResizeStop={
-                (e, direction, ref, d) => {
-                  context.actions.updateSize(context.state.width + d.width, context.state.height + d.height)
-                }
-              }
-              handleClasses={{
-                right: 'handle-right',
-                bottom: 'handle-bottom',
-                bottomRight: 'handle-bottom-right'
-              }}
-            >
-              <DeviceWrapper
-                resizable={context.state.resizable}
-                orientation={context.state.orientation}
-                hasFrame={context.state.hasFrame}
-                isNaked={isNaked}>
-                {isLoading &&
-                  <LoadingScreen>
-                    <Spinner />
-                  </LoadingScreen>
-                }
-                <DeviceScreen
-                  isNaked={isNaked}
-                  isLoading={isLoading}
-                  src={this.props.getUrl({
-                    url: context.state.src,
-                    refreshTime: refreshTime,
-                    ua: context.state.ua
-                  })}
-                  innerRef={(iframe: HTMLIFrameElement) => {
-                    this.iframe = iframe;
-                  }} />
-              </DeviceWrapper>
-            </Resizable>
-          </DeviceScaler>
-        </DeviceContainer>
-      )}
-    </DeviceModeContext.Consumer>);
-  }
+  const handleResizeStop = useCallback(
+    (_e: MouseEvent | TouchEvent, _direction: ResizeDirection, _ref: HTMLElement, d: NumberSize) => {
+      actions.updateSize(state.device.width + d.width, state.device.height + d.height);
+    },
+    [actions, state.device.width, state.device.height],
+  );
+
+  return (
+    <DeviceContainer ref={setFrameRef} $isNaked={isNaked}>
+      <DeviceScaler $scale={state.scale} $isNaked={isNaked}>
+        <Resizable
+          enable={enable}
+          size={size}
+          onResizeStop={handleResizeStop}
+          handleClasses={{
+            right: 'handle-right',
+            bottom: 'handle-bottom',
+            bottomRight: 'handle-bottom-right',
+          }}
+        >
+          <DeviceWrapper
+            $resizable={state.device.resizable}
+            $orientation={state.orientation}
+            $hasFrame={state.device.hasFrame}
+            $isNaked={isNaked}
+          >
+            {isLoading && (
+              <LoadingScreen>
+                <Spinner />
+              </LoadingScreen>
+            )}
+            <DeviceScreen
+              $isNaked={isNaked}
+              $isLoading={isLoading}
+              src={getUrl({
+                url: state.src,
+                refreshTime: refreshTime,
+                ua: state.device.ua,
+              })}
+              ref={iframeRef}
+            />
+          </DeviceWrapper>
+        </Resizable>
+      </DeviceScaler>
+    </DeviceContainer>
+  );
 }

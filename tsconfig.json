@@ -1,16 +1,25 @@
 {
   "compilerOptions": {
-      "sourceMap": true,
-      // TSはECMAScript 5に変換
-      "target": "es5",
-      // TSのモジュールはES Modulesとして出力
-      "module": "es2015",
-      // JSXの書式を有効に設定
-      "jsx": "react",
-      "moduleResolution": "node",
-      "lib": [
-      "es2018",
-      "dom"
-      ]
-  }
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["src", "examples"]
 }

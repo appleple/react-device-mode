@@ -1,77 +1,18 @@
-import { ReactNode } from 'react';
+import { DeviceModeContextType } from './stores/context';
 
 export interface I18n {
-  fitWindow: string
-}
-
-export interface Device {
-  devices: DeviceType[],
-  defaultDevice: string,
-  src: string,
-  i18n: I18n
-}
-
-interface getUrlFunc {
-  (option: {
-    url: string,
-    ua: string,
-    refreshTime: Date
-  }): string;
-}
-
-export interface DeviceProps extends Device {
-  header?: ReactNode,
-  sub?: ReactNode,
-  refreshTime?: Date,
-  getUrl?: getUrlFunc,
-  hasCloseBtn?: boolean,
-  isLoading?: boolean,
-  isNaked?: boolean,
-  onClose?(): void,
-  onUrlChange?(url: string, device?: DeviceModeState): any,
-  onIframeLoaded?(): any,
-  onDeviceUpdated?(device: DeviceModeState): any
-  getIframe?(iframe): any,
-}
-
-export interface DeviceModeState extends Device {
-  width: number,
-  height: number,
-  ua: string,
-  resizable: boolean,
-  hasFrame: boolean,
-  orientation: string
-  scale: number,
-}
-
-export interface DeviceModeContextType {
-  state: DeviceModeState,
-  actions: {
-    updateWidth(width: number): void,
-    updateHeight(width: number): void,
-    updateSize(width: number, height: number): void,
-    updateDevice(deviceUA: string): void,
-    updateScale(scale: number): number,
-    switchOrientation(): void,
-    onClose(): void
-  }
+  fitWindow: string;
 }
 
 export interface DeviceType {
-  name: string,
-  ua: string,
-  width?: number,
-  height?: number,
-  resizable?: boolean,
-  hasFrame?: boolean
+  name: string;
+  ua: string;
+  width: number;
+  height: number;
+  resizable: boolean;
+  hasFrame: boolean;
 }
 
-export interface DeviceComponentProps {
-  refreshTime: Date,
-  getUrl: getUrlFunc,
-  onUrlChange(url: string): any,
-  onIframeLoaded(): any,
-  getIframe(iframe: HTMLIFrameElement): any,
-  isLoading: boolean,
-  isNaked: boolean
+export interface DeviceChangeEvent extends Pick<DeviceModeContextType['state'], 'orientation' | 'scale' | 'src'> {
+  device: DeviceType;
 }

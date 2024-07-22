@@ -1,27 +1,17 @@
-import React, { Component } from 'react';
-import { render } from 'react-dom';
-import ReactDeviceMode from '../src/index.tsx';
+import { createRoot } from 'react-dom/client'
+import ReactDeviceMode from '../../dist/index.js';
+import { useState } from 'react';
 
-class TestPreview extends Component<{}, { url: string, isNaked: boolean }> {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      url: '/test/test.html',
-      isNaked: false,
-    }
-  }
-
-  render() {
-    const { url, isNaked } = this.state;
-    return (<div style={{ height: '100vh' }}>
-      <link rel="stylesheet" href="https://developer.a-blogcms.jp/themes/system/css/acms-admin.css" />
+function MyApp() {
+  const [isNaked, setIsNaked] = useState(false);
+  const [url, setUrl] = useState('/examples/pages/1.html');
+  return (
+    <div style={{ height: '100vh' }}>
       <ReactDeviceMode
         isNaked={isNaked}
         src={url}
         i18n={{ fitWindow: '画面サイズにあわせる' }}
-        defaultDevice="iPhone 6"
-        hasHistoryDevice={false}
+        hasHistoryDevice={true}
         devices={[
           {
             name: 'PC',
@@ -57,20 +47,23 @@ class TestPreview extends Component<{}, { url: string, isNaked: boolean }> {
           }
         ]}
         onUrlChange={(url) => {
-          this.setState({
-            url
-          })
+          setUrl(url);
+        }}
+        getUrl={({ url, ua, refreshTime }) => {
+          console.log(url, ua, refreshTime);
+          return url;
         }}
         getIframe={(iframe) => console.log(iframe)}
         onClose={() => console.log('closed')}
         header={<button>header</button>}
         sub={<button onClick={() => {
-          this.setState({
-            isNaked: !isNaked
-          })
+          setIsNaked((prev) => !prev);
         }}>isNaked toggle</button>}
-      /></div>)
-  }
+      />
+    </div>
+  );
 }
 
-render(<TestPreview />, document.querySelector('#root'));
+const container = document.getElementById('root');
+const root = createRoot(container!);
+root.render(<MyApp />);

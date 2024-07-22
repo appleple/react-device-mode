@@ -1,0 +1,13 @@
+node_modules/*
+eslint.config.js
+.gitgnore
+.node-version
+tsconfig.json
+vite.config.js
+tsup.config.js
+.editorconfig
+prettier.config.js
+/index.html
+src/*
+.husky/*
+examples/*
