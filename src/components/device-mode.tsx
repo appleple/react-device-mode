@@ -8,18 +8,17 @@ import styled, { keyframes } from 'styled-components';
 interface DeviceModeProps
   extends Pick<
     React.ComponentProps<typeof DeviceModeContextProvider>,
-    'devices' | 'i18n' | 'isNaked' | 'onClose' | 'onDeviceUpdated' | 'src'
+    'devices' | 'i18n' | 'isNaked' | 'onClose' | 'onDeviceUpdated' | 'src' | 'onDeviceInit'
   > {
   hasHistoryDevice?: boolean;
   historyDeviceKey?: string;
   defaultDevice?: DeviceType['name'];
-  header: React.ComponentPropsWithoutRef<typeof Header>['header'];
-  sub: React.ComponentPropsWithoutRef<typeof Header>['sub'];
+  headerLeft?: React.ComponentPropsWithoutRef<typeof Header>['headerLeft'];
+  headerRight?: React.ComponentPropsWithoutRef<typeof Header>['headerRight'];
   hasCloseBtn?: React.ComponentPropsWithoutRef<typeof Header>['hasCloseBtn'];
   isLoading?: React.ComponentPropsWithoutRef<typeof Device>['isLoading'];
   refreshTime?: React.ComponentPropsWithoutRef<typeof Device>['refreshTime'];
   getUrl?: React.ComponentPropsWithoutRef<typeof Device>['getUrl'];
-  onUrlChange?: React.ComponentPropsWithoutRef<typeof Device>['onUrlChange'];
   onIframeLoaded?: React.ComponentPropsWithoutRef<typeof Device>['onIframeLoaded'];
   getIframe?: React.ComponentPropsWithoutRef<typeof Device>['getIframe'];
 }
@@ -37,6 +36,8 @@ const showAnimation = keyframes`
 const Viewer = styled.div`
   height: 100%;
   width: 100%;
+  display: flex;
+  flex-flow: column nowrap;
   animation: ${showAnimation} 0.5s ease-out;
 `;
 
@@ -48,11 +49,11 @@ export default function DeviceMode({
   defaultDevice = '',
   onClose = () => {},
   getIframe = () => {},
-  onUrlChange = () => {},
   onIframeLoaded = () => {},
   onDeviceUpdated = () => {},
-  header,
-  sub,
+  onDeviceInit = () => {},
+  headerLeft,
+  headerRight,
   ...props
 }: DeviceModeProps) {
   const getHistoryDeviceName = useCallback((): string | null => {
@@ -80,15 +81,6 @@ export default function DeviceMode({
     [hasHistoryDevice, historyDeviceKey],
   );
 
-  const handleUrlChange = useCallback(
-    (url: string) => {
-      if (onUrlChange) {
-        onUrlChange(url);
-      }
-    },
-    [onUrlChange],
-  );
-
   const handleIframeLoaded = useCallback(() => {
     if (onIframeLoaded) {
       onIframeLoaded();
@@ -107,6 +99,16 @@ export default function DeviceMode({
       onClose();
     }
   }, [onClose]);
+
+  const handleDeviceInit = useCallback(
+    (event: DeviceChangeEvent) => {
+      setHistoryDeviceName(event.device.name);
+      if (onDeviceInit) {
+        onDeviceInit(event);
+      }
+    },
+    [onDeviceInit, setHistoryDeviceName],
+  );
 
   const handleDeviceUpdated = useCallback(
     (event: DeviceChangeEvent) => {
@@ -128,16 +130,16 @@ export default function DeviceMode({
       isNaked={isNaked}
       i18n={i18n}
       onDeviceUpdated={handleDeviceUpdated}
+      onDeviceInit={handleDeviceInit}
       onClose={handleClose}
     >
       <Viewer>
-        {!isNaked && <Header header={header} sub={sub} hasCloseBtn={hasCloseBtn} />}
+        {!isNaked && <Header headerLeft={headerLeft} headerRight={headerRight} hasCloseBtn={hasCloseBtn} />}
         <Device
           isNaked={isNaked}
           refreshTime={refreshTime}
           getUrl={getUrl}
           isLoading={isLoading}
-          onUrlChange={handleUrlChange}
           onIframeLoaded={handleIframeLoaded}
           getIframe={handleGetIframe}
         />

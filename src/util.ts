@@ -1,15 +1,3 @@
-export const onIframeUrlChange = (callback: (url: string) => void): void => {
-  window.addEventListener('message', (e) => {
-    if (e.data.task === 'preview') {
-      setTimeout(() => {
-        setTimeout(() => {
-          callback(e.data.url);
-        }, 100);
-      }, 0);
-    }
-  });
-};
-
 export const getVisibleSize = (element: HTMLElement): { width: number; height: number } => {
   const rect = element.getBoundingClientRect();
   const windowHeight = window.innerHeight || document.documentElement.clientHeight;

@@ -12,6 +12,7 @@ interface DeviceModeContextProviderProps {
   isNaked?: boolean;
   i18n?: Record<string, string>;
   onDeviceUpdated?(evnet: DeviceChangeEvent): void;
+  onDeviceInit?(event: DeviceChangeEvent): void;
   onClose?(): void;
 }
 
@@ -37,6 +38,7 @@ export default function DeviceModeContextProvider({
   isNaked = false,
   i18n: i18nProp = {},
   onDeviceUpdated = () => {},
+  onDeviceInit = () => {},
   onClose = () => {},
 }: DeviceModeContextProviderProps) {
   const frameRef = useRef<HTMLDivElement | null>(null);
@@ -69,8 +71,12 @@ export default function DeviceModeContextProvider({
 
     if (isNaked) {
       updateWidth(frameRef.current.offsetWidth);
-    } else if (device.resizable && device.width > frameRef.current.offsetWidth - 45) {
-      updateWidth(frameRef.current.offsetWidth - 45);
+    } else if (device.resizable) {
+      const frameSize = getVisibleSize(frameRef.current);
+
+      if (device.width > frameSize.width - 45) {
+        updateWidth(frameSize.width - 45);
+      }
     }
   }, [device.resizable, device.width, isNaked, updateWidth]);
 
@@ -105,7 +111,6 @@ export default function DeviceModeContextProvider({
       }
       if (scale === -1) {
         const { width: containerWidth, height: containerHeight } = getVisibleSize(frameRef.current);
-        console.log(getVisibleSize(frameRef.current));
         const wrapperHeight = containerHeight - FramePosTop;
         const frameHeight = device.hasFrame ? device.height + FrameTop + FrameBottom + 20 : device.height + 20;
         const scaleHeightRatio = (wrapperHeight / frameHeight) * 100;
@@ -136,6 +141,18 @@ export default function DeviceModeContextProvider({
       window.removeEventListener('resize', handleResize);
     };
   }, [ajustWindowSize]);
+
+  useEffect(() => {
+    if (onDeviceInit) {
+      onDeviceInit({
+        device,
+        src,
+        scale,
+        orientation,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const value: DeviceModeContextType = useMemo(
     () => ({

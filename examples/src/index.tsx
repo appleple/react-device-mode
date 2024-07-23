@@ -1,10 +1,24 @@
 import { createRoot } from 'react-dom/client'
 import ReactDeviceMode from '../../dist/index.js';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function MyApp() {
   const [isNaked, setIsNaked] = useState(false);
   const [url, setUrl] = useState('/examples/pages/1.html');
+
+  useEffect(() => {
+    const handleMessage = (e: MessageEvent) => {
+      if (e.data.task === 'preview') {
+        console.log(e.data.url);
+        setUrl(e.data.url);
+      }
+    }
+    window.addEventListener('message', handleMessage);
+
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, []);
   return (
     <div style={{ height: '100vh' }}>
       <ReactDeviceMode
@@ -46,17 +60,20 @@ function MyApp() {
             hasFrame: true
           }
         ]}
-        onUrlChange={(url) => {
-          setUrl(url);
-        }}
         getUrl={({ url, ua, refreshTime }) => {
           console.log(url, ua, refreshTime);
           return url;
         }}
+        onDeviceUpdated={(event) => {
+          console.log('update device', event);
+        }}
+        onDeviceInit={(event) => {
+          console.log('init device', event);
+        }}
         getIframe={(iframe) => console.log(iframe)}
         onClose={() => console.log('closed')}
-        header={<button>header</button>}
-        sub={<button onClick={() => {
+        headerLeft={<button>header</button>}
+        headerRight={<button onClick={() => {
           setIsNaked((prev) => !prev);
         }}>isNaked toggle</button>}
       />

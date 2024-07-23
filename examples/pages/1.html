@@ -82,6 +82,11 @@
 
 .overflow-hidden { overflow: hidden; }
     </style>
+    <script>
+      if (window.parent !== window && location.href) {
+        window.parent.postMessage({ task: 'preview', url: location.href }, '*');
+      }
+    </script>
 </head>
 <body>
     <nav class="site-header sticky-top py-1">

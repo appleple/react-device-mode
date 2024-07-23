@@ -3,8 +3,8 @@ import { useDeviceModeStore } from '../stores';
 import styled from 'styled-components';
 
 interface HeaderProps {
-  header: ReactNode;
-  sub: ReactNode;
+  headerLeft?: ReactNode;
+  headerRight?: ReactNode;
   hasCloseBtn: boolean;
 }
 
@@ -51,7 +51,7 @@ const InputDevider = styled.div`
 `;
 
 const BtnStyle = styled.button`
-  padding: 5px 10px;
+  padding: 3px 10px;
 `;
 
 const DismissBtnLayout = styled.div`
@@ -107,7 +107,7 @@ const RotateIcon = styled.span`
   height: 16px;
 `;
 
-export default function Header({ header, sub, hasCloseBtn }: HeaderProps) {
+export default function Header({ headerLeft, headerRight, hasCloseBtn }: HeaderProps) {
   const { state, actions } = useDeviceModeStore();
   const scaleSelectRef = useRef<HTMLSelectElement>(null);
 
@@ -163,7 +163,7 @@ export default function Header({ header, sub, hasCloseBtn }: HeaderProps) {
   return (
     <HeaderStyle>
       <FormStyle className="acms-admin-form">
-        {header}
+        {headerLeft && <div>{headerLeft}</div>}
         <div>
           <select defaultValue={state.device.name} onChange={handleDeviceChange}>
             {state.devices.map((device) => (
@@ -205,7 +205,7 @@ export default function Header({ header, sub, hasCloseBtn }: HeaderProps) {
             </BtnStyle>
           </div>
         )}
-        {sub}
+        {headerRight && <div>{headerRight}</div>}
       </FormStyle>
       {hasCloseBtn && (
         <DismissBtnLayout>

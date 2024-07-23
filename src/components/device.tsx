@@ -1,15 +1,13 @@
 /* eslint react/react-in-jsx-scope: 0 */
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { NumberSize, Resizable, ResizeDirection } from 're-resizable';
 import styled, { css, keyframes } from 'styled-components';
 import { useDeviceModeStore } from '../stores';
-import { onIframeUrlChange } from '../util';
 import { FrameLeft, FrameRight, FrameTop, FrameBottom, FramePosTop } from '../constants';
 
 export interface DeviceProps {
   refreshTime?: Date;
   getUrl?(option: { url: string; ua: string; refreshTime: Date }): string;
-  onUrlChange?(url: string): void;
   onIframeLoaded?(): void;
   getIframe?(iframe: HTMLIFrameElement): void;
   isLoading?: boolean;
@@ -47,7 +45,7 @@ const DeviceContainer = styled.div<{
   $isNaked: boolean;
 }>`
   width: 100%;
-  height: 100%;
+  flex: 1;
   ${(props) =>
     !props.$isNaked &&
     css`
@@ -277,7 +275,14 @@ const DeviceWrapper = styled.div<{
   `}
 `;
 
-const DeviceScreen = styled.iframe<{
+const DeviceScreen = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+`;
+
+const DeviceView = styled.iframe<{
   $isNaked: boolean;
   $isLoading: boolean;
 }>`
@@ -303,7 +308,13 @@ const LoadingScreen = styled.div`
   width: 100%;
   height: 100%;
   background-color: #eee;
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Spinner = styled.div`
@@ -322,14 +333,46 @@ const Spinner = styled.div`
 `;
 
 export default function Device({
-  isLoading = false,
+  isLoading: isLoadingProp = false,
   getUrl = ({ url }) => url,
   refreshTime = new Date(),
   isNaked = false,
-  ...props
+  getIframe = () => {},
+  onIframeLoaded = () => {},
 }: DeviceProps) {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const { state, actions, setFrameRef } = useDeviceModeStore();
+  const [isIframeLoading, setIsIframeLoading] = useState(true);
+
+  const iframeSrc = useMemo(
+    () =>
+      getUrl({
+        url: state.src,
+        refreshTime: refreshTime,
+        ua: state.device.ua,
+      }),
+    [state.src, refreshTime, state.device.ua, getUrl],
+  );
+
+  const handleIframeLoad = useCallback(
+    (event: React.SyntheticEvent<HTMLIFrameElement>) => {
+      const iframe = event.target as HTMLIFrameElement;
+      if (iframe && iframe.contentDocument && iframe.contentDocument.body) {
+        iframe.contentDocument.body.style.maxWidth = '100vw';
+      }
+      if (onIframeLoaded) {
+        onIframeLoaded();
+      }
+      setIsIframeLoading(false);
+    },
+    [onIframeLoaded],
+  );
+
+  useEffect(() => {
+    setIsIframeLoading(true);
+  }, [iframeSrc]);
+
+  const isLoading = useMemo(() => isIframeLoading || isLoadingProp, [isIframeLoading, isLoadingProp]);
 
   const enable = useMemo(
     () => ({
@@ -370,31 +413,10 @@ export default function Device({
       return;
     }
 
-    onIframeUrlChange((url) => {
-      if (props.onUrlChange) {
-        props.onUrlChange(url);
-      }
-    });
-
-    if (props.getIframe) {
-      props.getIframe(iframe);
+    if (getIframe) {
+      getIframe(iframe);
     }
-
-    const handleIframeLoad = () => {
-      if (iframe && iframe.contentDocument && iframe.contentDocument.body) {
-        iframe.contentDocument.body.style.maxWidth = '100vw';
-      }
-      if (props.onIframeLoaded) {
-        props.onIframeLoaded();
-      }
-    };
-
-    iframe.addEventListener('load', handleIframeLoad);
-
-    return () => {
-      iframe.removeEventListener('load', handleIframeLoad);
-    };
-  }, [props]);
+  }, [getIframe]);
 
   const handleResizeStop = useCallback(
     (_e: MouseEvent | TouchEvent, _direction: ResizeDirection, _ref: HTMLElement, d: NumberSize) => {
@@ -422,21 +444,20 @@ export default function Device({
             $hasFrame={state.device.hasFrame}
             $isNaked={isNaked}
           >
-            {isLoading && (
-              <LoadingScreen>
-                <Spinner />
-              </LoadingScreen>
-            )}
-            <DeviceScreen
-              $isNaked={isNaked}
-              $isLoading={isLoading}
-              src={getUrl({
-                url: state.src,
-                refreshTime: refreshTime,
-                ua: state.device.ua,
-              })}
-              ref={iframeRef}
-            />
+            <DeviceScreen>
+              {isLoading && (
+                <LoadingScreen>
+                  <Spinner />
+                </LoadingScreen>
+              )}
+              <DeviceView
+                $isNaked={isNaked}
+                $isLoading={isLoading}
+                src={iframeSrc}
+                ref={iframeRef}
+                onLoad={handleIframeLoad}
+              />
+            </DeviceScreen>
           </DeviceWrapper>
         </Resizable>
       </DeviceScaler>
