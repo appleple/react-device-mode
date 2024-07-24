@@ -1,5 +1,6 @@
+import React from 'react';
 import { createRoot } from 'react-dom/client'
-import ReactDeviceMode from '../../dist/index.js';
+import ReactDeviceMode from '../../dist/index.mjs';
 import { useEffect, useState } from 'react';
 
 function MyApp() {
