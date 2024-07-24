@@ -27,7 +27,8 @@
     "lint": "eslint \"src/**/*.{js,mjs,cjs,ts,jsx,tsx}\" --fix",
     "format": "prettier --write \"src/**/*.{js,mjs,cjs,ts,jsx,tsx}\"",
     "deploy": "np --yolo",
-    "prepare": "husky"
+    "prepare": "husky",
+    "prepack": "npm run build"
   },
   "author": "steelydylan",
   "license": "MIT",

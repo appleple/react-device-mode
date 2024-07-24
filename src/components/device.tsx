@@ -1,5 +1,4 @@
-/* eslint react/react-in-jsx-scope: 0 */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { NumberSize, Resizable, ResizeDirection } from 're-resizable';
 import styled, { css, keyframes } from 'styled-components';
 import { useDeviceModeStore } from '../stores';
