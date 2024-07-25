@@ -48,8 +48,6 @@ const DeviceContainer = styled.div<{
   ${(props) =>
     !props.$isNaked &&
     css`
-      display: flex;
-      justify-content: center;
       background-color: #dddddd;
       padding-top: ${FramePosTop}px;
       padding-right: 10px;
@@ -331,6 +329,10 @@ const Spinner = styled.div`
   animation: ${spinnerAnimation} 0.5s infinite linear;
 `;
 
+const StyledResizable = styled(Resizable)`
+  margin: 0 auto;
+`;
+
 export default function Device({
   isLoading: isLoadingProp = false,
   getUrl = ({ url }) => url,
@@ -427,7 +429,7 @@ export default function Device({
   return (
     <DeviceContainer ref={setFrameRef} $isNaked={isNaked}>
       <DeviceScaler $scale={state.scale} $isNaked={isNaked}>
-        <Resizable
+        <StyledResizable
           enable={enable}
           size={size}
           onResizeStop={handleResizeStop}
@@ -458,7 +460,7 @@ export default function Device({
               />
             </DeviceScreen>
           </DeviceWrapper>
-        </Resizable>
+        </StyledResizable>
       </DeviceScaler>
     </DeviceContainer>
   );
