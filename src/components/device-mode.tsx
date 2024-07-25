@@ -3,7 +3,7 @@ import { DeviceModeContextProvider } from '../stores';
 import Header from './header';
 import Device from './device';
 import { DeviceChangeEvent, DeviceType } from '../type';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 
 interface DeviceModeProps
   extends Pick<
@@ -23,22 +23,11 @@ interface DeviceModeProps
   getIframe?: React.ComponentPropsWithoutRef<typeof Device>['getIframe'];
 }
 
-const showAnimation = keyframes`
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-`;
-
 const Viewer = styled.div`
   height: 100%;
   width: 100%;
   display: flex;
   flex-flow: column nowrap;
-  animation: ${showAnimation} 0.5s ease-out;
 `;
 
 export default function DeviceMode({
