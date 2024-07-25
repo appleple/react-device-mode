@@ -52,15 +52,16 @@ export default function DeviceModeContextProvider({
   const i18n = useMemo(() => ({ ...defaultValues.i18n, ...i18nProp }), [i18nProp]);
 
   const updateWidth = useCallback(
-    (width: number) => setDevice((prevDevice) => ({ ...prevDevice, width })),
+    (width: number) => setDevice((prevDevice) => ({ ...prevDevice, width: Math.round(width) })),
     [setDevice],
   );
   const updateHeight = useCallback(
-    (height: number) => setDevice((prevDevice) => ({ ...prevDevice, height })),
+    (height: number) => setDevice((prevDevice) => ({ ...prevDevice, height: Math.round(height) })),
     [setDevice],
   );
   const updateSize = useCallback(
-    (width: number, height: number) => setDevice((prevDevice) => ({ ...prevDevice, width, height })),
+    (width: number, height: number) =>
+      setDevice((prevDevice) => ({ ...prevDevice, width: Math.round(width), height: Math.round(height) })),
     [setDevice],
   );
 
