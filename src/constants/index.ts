@@ -1,5 +1,5 @@
-export const FrameLeft = 18;
-export const FrameRight = 18;
-export const FrameTop = 60;
-export const FrameBottom = 70;
+export const FrameLeft = 15;
+export const FrameRight = 15;
+export const FrameTop = 15;
+export const FrameBottom = 15;
 export const FramePosTop = 60;

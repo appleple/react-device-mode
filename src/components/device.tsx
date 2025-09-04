@@ -200,7 +200,7 @@ const DeviceWrapper = styled.div<{
   ${(props) =>
     !props.$isNaked &&
     css`
-  border: 2px solid #bcbcbc;
+  border: 1px solid #bcbcbc;
   animation ${deviceAnimation} .5s ease-out;
   ${
     props.$resizable || !props.$hasFrame
@@ -221,52 +221,10 @@ const DeviceWrapper = styled.div<{
     padding-bottom: ${FrameLeft}px;
   `
   }
-  border-radius: 35px;
+  border-radius: 20px;
   clear: both;
   background: #333;
   box-sizing: border-box;
-  &:before {
-    content: "";
-    border: 2px solid #bcbcbc;
-    position: absolute;
-    ${
-      props.$orientation === 'portrait' || props.$resizable
-        ? `
-      bottom: 10px;
-      left: calc(50% - 20px);
-    `
-        : `
-      right: 10px;
-      bottom: calc(50% - 20px);
-    `
-    }
-    width: 40px;
-    height: 40px;
-    border-radius: 20px;
-    box-sizing: border-box;
-  }
-  &:after {
-    content: "";
-    border: 3px solid #bcbcbc;
-    position: absolute;
-    ${
-      props.$orientation === 'portrait' || props.$resizable
-        ? `
-      top: 25px;
-      left: calc(50% - 40px);
-      width: 80px;
-      height: 6px;
-    `
-        : `
-      left: 25px;
-      top: calc(50% - 40px);
-      width: 6px;
-      height  80px;
-    `
-    }
-    border-radius: 5px;
-    box-sizing: border-box;
-  }
   `
   }
   `}
