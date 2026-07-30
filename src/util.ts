@@ -1,3 +1,6 @@
+export const cx = (...classNames: Array<string | false | null | undefined>): string =>
+  classNames.filter(Boolean).join(' ');
+
 export const getVisibleSize = (element: HTMLElement): { width: number; height: number } => {
   const rect = element.getBoundingClientRect();
   const windowHeight = window.innerHeight || document.documentElement.clientHeight;

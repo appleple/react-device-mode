@@ -3,13 +3,12 @@ import { DeviceModeContextProvider } from '../stores';
 import Header from './header';
 import Device from './device';
 import { DeviceChangeEvent, DeviceType } from '../type';
-import styled from 'styled-components';
+import './device-mode.css';
 
-interface DeviceModeProps
-  extends Pick<
-    React.ComponentProps<typeof DeviceModeContextProvider>,
-    'devices' | 'i18n' | 'isNaked' | 'onClose' | 'onDeviceUpdated' | 'src' | 'onDeviceInit'
-  > {
+interface DeviceModeProps extends Pick<
+  React.ComponentProps<typeof DeviceModeContextProvider>,
+  'devices' | 'i18n' | 'isNaked' | 'onClose' | 'onDeviceUpdated' | 'src' | 'onDeviceInit'
+> {
   hasHistoryDevice?: boolean;
   historyDeviceKey?: string;
   defaultDevice?: DeviceType['name'];
@@ -22,13 +21,6 @@ interface DeviceModeProps
   onIframeLoaded?: React.ComponentPropsWithoutRef<typeof Device>['onIframeLoaded'];
   getIframe?: React.ComponentPropsWithoutRef<typeof Device>['getIframe'];
 }
-
-const Viewer = styled.div`
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-flow: column nowrap;
-`;
 
 export default function DeviceMode({
   hasCloseBtn = true,
@@ -122,7 +114,7 @@ export default function DeviceMode({
       onDeviceInit={handleDeviceInit}
       onClose={handleClose}
     >
-      <Viewer>
+      <div className="rdm-viewer">
         {!isNaked && <Header headerLeft={headerLeft} headerRight={headerRight} hasCloseBtn={hasCloseBtn} />}
         <Device
           isNaked={isNaked}
@@ -132,7 +124,7 @@ export default function DeviceMode({
           onIframeLoaded={handleIframeLoaded}
           getIframe={handleGetIframe}
         />
-      </Viewer>
+      </div>
     </DeviceModeContextProvider>
   );
 }

@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { NumberSize, Resizable, ResizeDirection } from 're-resizable';
-import styled, { css, keyframes } from 'styled-components';
 import { useDeviceModeStore } from '../stores';
 import { FrameLeft, FrameRight, FrameTop, FrameBottom, FramePosTop } from '../constants';
+import { cx } from '../util';
+import './device.css';
 
 export interface DeviceProps {
   refreshTime?: Date;
@@ -12,284 +13,6 @@ export interface DeviceProps {
   isLoading?: boolean;
   isNaked?: boolean;
 }
-
-const deviceAnimation = keyframes`
-  from {
-    transform: translateY(-30px);
-    opacity: 0;
-  }
-
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-`;
-
-const spinnerAnimation = keyframes`
-  0% {
-    opacity: .4;
-    transform: rotate(0deg);
-  }
-  50% {
-    opacity: 1;
-    transform: rotate(180deg);
-  }
-  100% {
-    opacity: .4;
-    transform: rotate(360deg);
-  }
-`;
-
-const DeviceContainer = styled.div<{
-  $isNaked: boolean;
-}>`
-  width: 100%;
-  flex: 1;
-  ${(props) =>
-    !props.$isNaked &&
-    css`
-      background-color: #dddddd;
-      padding-top: ${FramePosTop}px;
-      padding-right: 10px;
-      padding-left: 10px;
-      box-sizing: border-box;
-      overflow: auto;
-    `}
-`;
-
-const DeviceScaler = styled.div<{
-  $isNaked: boolean;
-  $scale: number;
-}>`
-  height: 100%;
-  ${(props) =>
-    props.$isNaked &&
-    css`
-      width: 100%;
-    `}
-  ${(props) =>
-    !props.$isNaked &&
-    css`
-      transform: scale(${props.$scale / 100});
-      transform-origin: top center;
-      .handle-right {
-        position: relative;
-        background: #bbb;
-        transition: background 0.3s;
-        right: -${(1 / props.$scale) * 2000}px !important;
-        width: ${(1 / props.$scale) * 2000}px !important;
-        &:hover {
-          background: #999;
-        }
-        &:before {
-          content: '';
-          display: block;
-          position: absolute;
-          top: 50%;
-          border-radius: 2px;
-          left: ${(1 / props.$scale) * 600}px;
-          width: ${(1 / props.$scale) * 300}px;
-          height: ${(1 / props.$scale) * 3000}px;
-          margin-top: -${(1 / props.$scale) * 1500}px;
-          background-color: #fff;
-        }
-        &:after {
-          content: '';
-          display: block;
-          position: absolute;
-          top: 50%;
-          border-radius: 2px;
-          left: ${(1 / props.$scale) * 1200}px;
-          width: ${(1 / props.$scale) * 300}px;
-          height: ${(1 / props.$scale) * 3000}px;
-          margin-top: -${(1 / props.$scale) * 1500}px;
-          background-color: #fff;
-        }
-      }
-      .handle-bottom {
-        background: #999;
-        position: relative;
-        background: #bbb;
-        transition: background 0.3s;
-        bottom: -${(1 / props.$scale) * 2000}px !important;
-        height: ${(1 / props.$scale) * 2000}px !important;
-        &:hover {
-          background: #999;
-        }
-        &:before {
-          content: '';
-          display: block;
-          position: absolute;
-          left: 50%;
-          border-radius: 2px;
-          top: ${(1 / props.$scale) * 600}px;
-          height: ${(1 / props.$scale) * 300}px;
-          width: ${(1 / props.$scale) * 3000}px;
-          margin-left: -${(1 / props.$scale) * 1500}px;
-          background-color: #fff;
-        }
-        &:after {
-          content: '';
-          display: block;
-          position: absolute;
-          top: 6px;
-          left: 50%;
-          border-radius: 2px;
-          top: ${(1 / props.$scale) * 1200}px;
-          height: ${(1 / props.$scale) * 300}px;
-          width: ${(1 / props.$scale) * 3000}px;
-          margin-left: -${(1 / props.$scale) * 1500}px;
-          background-color: #fff;
-        }
-      }
-      .handle-bottom-right {
-        background: #bbb;
-        transition: background 0.3s;
-        right: -${(1 / props.$scale) * 2000}px !important;
-        bottom: -${(1 / props.$scale) * 2000}px !important;
-        height: ${(1 / props.$scale) * 2000}px !important;
-        width: ${(1 / props.$scale) * 2000}px !important;
-
-        &:hover {
-          background: #999;
-        }
-        &:before {
-          content: '';
-          display: block;
-          position: absolute;
-          background-color: #fff;
-          transform: rotate(-45deg);
-          border-radius: 2px;
-          top: ${(1 / props.$scale) * 800}px;
-          left: 0;
-          height: ${(1 / props.$scale) * 300}px;
-          width: ${(1 / props.$scale) * 2000}px;
-        }
-        &:after {
-          content: '';
-          display: block;
-          position: absolute;
-          background-color: #fff;
-          transform: rotate(-45deg);
-          border-radius: 2px;
-          top: ${(1 / props.$scale) * 1300}px;
-          left: ${(1 / props.$scale) * 800}px;
-          height: ${(1 / props.$scale) * 300}px;
-          width: ${(1 / props.$scale) * 1200}px;
-        }
-      }
-    `}
-`;
-
-const DeviceWrapper = styled.div<{
-  $isNaked: boolean;
-  $resizable: boolean;
-  $hasFrame: boolean;
-  $orientation: string;
-}>`
-  margin: 0 auto;
-  width: 100%;
-  height: 100%;
-  position: relative;
-  ${(props) =>
-    props.$isNaked &&
-    `
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-  `}
-  ${(props) =>
-    !props.$isNaked &&
-    css`
-  border: 1px solid #bcbcbc;
-  animation ${deviceAnimation} .5s ease-out;
-  ${
-    props.$resizable || !props.$hasFrame
-      ? ''
-      : `
-  ${
-    props.$orientation === 'portrait' || props.$resizable
-      ? `
-    padding-top: ${FrameTop}px;
-    padding-left: ${FrameLeft}px;
-    padding-right: ${FrameRight}px;
-    padding-bottom: ${FrameBottom}px;
-  `
-      : `
-    padding-top: ${FrameRight}px;
-    padding-left: ${FrameTop}px;
-    padding-right: ${FrameBottom}px;
-    padding-bottom: ${FrameLeft}px;
-  `
-  }
-  border-radius: 20px;
-  clear: both;
-  background: #333;
-  box-sizing: border-box;
-  `
-  }
-  `}
-`;
-
-const DeviceScreen = styled.div`
-  position: relative;
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-`;
-
-const DeviceView = styled.iframe<{
-  $isNaked: boolean;
-  $isLoading: boolean;
-}>`
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-  background-color: #fff;
-  ${(props) =>
-    !props.$isNaked &&
-    `
-  border: 1px solid #CCC;
-  border-radius: 2px;
-  `}
-  ${(props) =>
-    props.$isNaked &&
-    `
-  border: none;
-  `}
-  ${(props) => (!props.$isLoading ? 'visibility: visible;' : 'visibility: hidden;')}
-`;
-
-const LoadingScreen = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: #eee;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 10;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Spinner = styled.div`
-  position: absolute;
-  z-index: 101;
-  top: 50%;
-  left: 50%;
-  width: 30px;
-  height: 30px;
-  margin-top: -15px;
-  margin-left: -15px;
-  border: 8px solid #333;
-  border-right-color: transparent;
-  border-radius: 50%;
-  animation: ${spinnerAnimation} 0.5s infinite linear;
-`;
-
-const StyledResizable = styled(Resizable)`
-  margin: 0 auto;
-`;
 
 export default function Device({
   isLoading: isLoadingProp = false,
@@ -384,10 +107,34 @@ export default function Device({
     [actions, state.device.width, state.device.height],
   );
 
+  const hasFramePadding = !isNaked && !state.device.resizable && state.device.hasFrame;
+
+  const framePadding = useMemo(() => {
+    if (state.orientation === 'portrait') {
+      return { top: FrameTop, right: FrameRight, bottom: FrameBottom, left: FrameLeft };
+    }
+    return { top: FrameRight, right: FrameBottom, bottom: FrameLeft, left: FrameTop };
+  }, [state.orientation]);
+
+  const wrapperStyle = {
+    '--rdm-frame-pad-top': `${framePadding.top}px`,
+    '--rdm-frame-pad-right': `${framePadding.right}px`,
+    '--rdm-frame-pad-bottom': `${framePadding.bottom}px`,
+    '--rdm-frame-pad-left': `${framePadding.left}px`,
+  } as React.CSSProperties;
+
   return (
-    <DeviceContainer ref={setFrameRef} $isNaked={isNaked}>
-      <DeviceScaler $scale={state.scale} $isNaked={isNaked}>
-        <StyledResizable
+    <div
+      ref={setFrameRef}
+      className={cx('rdm-device-container', !isNaked && 'rdm-device-container--framed')}
+      style={{ '--rdm-frame-pos-top': `${FramePosTop}px` } as React.CSSProperties}
+    >
+      <div
+        className={cx('rdm-device-scaler', isNaked ? 'rdm-device-scaler--naked' : 'rdm-device-scaler--scaled')}
+        style={{ '--rdm-scale': state.scale } as React.CSSProperties}
+      >
+        <Resizable
+          className="rdm-resizable"
           enable={enable}
           size={size}
           onResizeStop={handleResizeStop}
@@ -397,29 +144,35 @@ export default function Device({
             bottomRight: 'handle-bottom-right',
           }}
         >
-          <DeviceWrapper
-            $resizable={state.device.resizable}
-            $orientation={state.orientation}
-            $hasFrame={state.device.hasFrame}
-            $isNaked={isNaked}
+          <div
+            className={cx(
+              'rdm-device-wrapper',
+              isNaked ? 'rdm-device-wrapper--naked' : 'rdm-device-wrapper--bordered',
+              hasFramePadding && 'rdm-device-wrapper--frame',
+            )}
+            style={wrapperStyle}
           >
-            <DeviceScreen>
+            <div className="rdm-device-screen">
               {isLoading && (
-                <LoadingScreen>
-                  <Spinner />
-                </LoadingScreen>
+                <div className="rdm-loading-screen">
+                  <div className="rdm-spinner" />
+                </div>
               )}
-              <DeviceView
-                $isNaked={isNaked}
-                $isLoading={isLoading}
+              <iframe
+                title="device preview"
+                className={cx(
+                  'rdm-device-view',
+                  isNaked && 'rdm-device-view--naked',
+                  isLoading && 'rdm-device-view--loading',
+                )}
                 src={iframeSrc}
                 ref={iframeRef}
                 onLoad={handleIframeLoad}
               />
-            </DeviceScreen>
-          </DeviceWrapper>
-        </StyledResizable>
-      </DeviceScaler>
-    </DeviceContainer>
+            </div>
+          </div>
+        </Resizable>
+      </div>
+    </div>
   );
 }
