@@ -92,17 +92,18 @@ export default function DeviceModeContextProvider({
         }) || devices[0];
 
       setDevice(device);
+      setOrientation(defaultValues.orientation);
 
       if (onDeviceUpdated) {
         onDeviceUpdated({
           device,
           src,
           scale,
-          orientation,
+          orientation: defaultValues.orientation,
         });
       }
     },
-    [devices, src, scale, orientation, onDeviceUpdated],
+    [devices, src, scale, onDeviceUpdated],
   );
 
   const updateScale = useCallback(
