@@ -2,6 +2,10 @@
   "name": "react-device-mode",
   "version": "1.5.0",
   "description": "device viewer for a-blog cms",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/appleple/react-device-mode.git"
+  },
   "browserslist": [
     "defaults",
     "safari >= 12"
@@ -25,9 +29,14 @@
     "dev": "concurrently \"tsup --watch --sourcemap inline\" \"vite\"",
     "lint": "eslint \"src/**/*.{js,mjs,cjs,ts,jsx,tsx}\" --fix",
     "format": "prettier --write \"src/**/*.{js,mjs,cjs,ts,jsx,tsx}\"",
-    "deploy": "np --yolo",
+    "test": "echo \"no tests yet\" && exit 0",
     "prepare": "husky",
-    "prepack": "npm run build"
+    "prepack": "npm run build",
+    "preversion": "npm run build && npm test",
+    "postversion": "git push && git push --tags",
+    "release:major": "npm version major",
+    "release:minor": "npm version minor",
+    "release:patch": "npm version patch"
   },
   "author": "steelydylan",
   "license": "MIT",
@@ -52,8 +61,6 @@
     "globals": "^15.8.0",
     "husky": "^9.1.1",
     "lint-staged": "^15.2.7",
-    "np": "^12.0.0",
-    "npm-run-all": "^4.1.5",
     "prettier": "^3.3.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
