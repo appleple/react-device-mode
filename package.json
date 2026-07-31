@@ -1,6 +1,6 @@
 {
   "name": "react-device-mode",
-  "version": "1.4.5",
+  "version": "1.5.0",
   "description": "device viewer for a-blog cms",
   "browserslist": [
     "defaults",
